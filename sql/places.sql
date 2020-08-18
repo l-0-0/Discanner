@@ -8,6 +8,7 @@ CREATE TABLE places(
     id SERIAL PRIMARY KEY,
     lat INT NOT NULL,
     lng INT NOT NULL,
+    title VARCHAR NOT NULL CHECK (title <> ''),
     description VARCHAR NOT NULL CHECK (description <> ''),
     image VARCHAR,
     ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP

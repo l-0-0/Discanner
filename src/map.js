@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import {
     GoogleMap,
     useLoadScript,
@@ -7,10 +8,11 @@ import {
 } from "@react-google-maps/api";
 import mapStyle from "./mapStyle";
 
+const libraries = ["places"];
+
 export default function Map() {
     const [points, setPoints] = useState([]);
-
-    const libraries = ["places"];
+    const [chosen, setChosen] = useState(null);
 
     const center = {
         lat: 52.520008,
@@ -47,6 +49,14 @@ export default function Map() {
 
     const showThePoint = (e) => {
         console.log("e", e);
+        setPoints((newPoint) => [
+            ...newPoint,
+            {
+                lat: e.latLng.lat(),
+                lng: e.latLng.lng(),
+                time: new Date(),
+            },
+        ]);
     };
 
     return (
@@ -58,7 +68,31 @@ export default function Map() {
                 zoom={12}
                 options={options}
                 onClick={showThePoint}
-            />
+            >
+                {points &&
+                    points.map((point, id) => (
+                        <Marker
+                            key={id}
+                            position={{ lat: point.lat, lng: point.lng }}
+                            onClick={() => {
+                                setChosen(point);
+                                console.log("point", point);
+                            }}
+                        />
+                    ))}
+                {chosen && (
+                    <InfoWindow
+                        position={{ lat: chosen.lat, lng: chosen.lng }}
+                        onCloseClick={() => {
+                            setChosen(null);
+                        }}
+                    >
+                        <div>
+                            <h3>Something has happened here</h3>
+                        </div>
+                    </InfoWindow>
+                )}
+            </GoogleMap>
         </>
     );
 }
