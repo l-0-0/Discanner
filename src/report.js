@@ -4,24 +4,13 @@ import axios from "./axios";
 export default function Reports(props) {
     const { lat, lng } = props;
     // // console.log("props", props);
-    const [posts, setPosts] = useState();
+    const [posts, setPosts] = useState([]);
     const [inputs, setInputs] = useState();
     const [file, setFile] = useState();
     const [time, setTime] = useState();
     const [title, setTitle] = useState();
-
-    // useEffect(() => {
-    //     (async () => {
-    //         try {
-    //             const { data } = await axios.get("/get-posts");
-
-    //             setPosts(data);
-    //             console.log("data getting from posts", data);
-    //         } catch (err) {
-    //             console.log("error in getting posts: ", err);
-    //         }
-    //     })();
-    // }, []);
+    // const [details, setDetails] = useState();
+    const [showDetails, setShowDetails] = useState(false);
 
     function sendReport() {
         let formData = new FormData();
@@ -40,8 +29,8 @@ export default function Reports(props) {
                 .post("/post-image", formData)
                 .then(({ data }) => {
                     // console.log("data from post image", data);
-                    // setPosts([data, ...posts]);
                     setPosts(data);
+                    // setPosts(data);
                     setFile(null);
                 })
                 .catch((err) => console.log("error in post an image: ", err));
@@ -59,61 +48,72 @@ export default function Reports(props) {
             document.querySelector("textarea").value = "";
             setInputs("");
         }
+        setShowDetails(true);
     }
+
+    const dateChange = (time) => {
+        let newTime = new Date(time);
+        return newTime.toLocaleString("de-DE");
+    };
+
+    // console.log("posts", posts);
+
     return (
         <>
-            <div>
-                <input
-                    type="datetime-local"
-                    name="time"
-                    placeholder="date and time"
-                    onChange={(e) => setTime(e.target.value)}
-                />
-                <input
-                    // onChange={(e) => this.handleChange(e)}
-
-                    id="title"
-                    name="title"
-                    placeholder="Title"
-                    onChange={(e) => setTitle(e.target.value)}
-                />
-                {/* defaultValue="" */}
-
-                <textarea
-                    name="textarea"
-                    placeholder="Describe the happening!"
-                    onChange={(e) => setInputs(e.target.value)}
-                ></textarea>
-                <label className="label" id="post-label">
-                    Post an image!
+            {!showDetails && (
+                <div>
                     <input
-                        className="files"
-                        onChange={(e) => setFile(e.target.files[0])}
-                        type="file"
-                        name="file"
-                        accept="image/*"
+                        type="datetime-local"
+                        name="time"
+                        placeholder="date and time"
+                        onChange={(e) => setTime(e.target.value)}
                     />
-                </label>
+                    <input
+                        // onChange={(e) => this.handleChange(e)}
 
-                <button onClick={sendReport}>Save the report</button>
-            </div>
-            {/* <div>
-                {posts &&
-                    posts.map((post, id) => {
-                        return (
-                            <div key={id}>
+                        id="title"
+                        name="title"
+                        placeholder="Title"
+                        onChange={(e) => setTitle(e.target.value)}
+                    />
+                    {/* defaultValue="" */}
+
+                    <textarea
+                        name="textarea"
+                        placeholder="Describe the happening!"
+                        onChange={(e) => setInputs(e.target.value)}
+                    ></textarea>
+                    <label className="label" id="post-label">
+                        Post an image!
+                        <input
+                            className="files"
+                            onChange={(e) => setFile(e.target.files[0])}
+                            type="file"
+                            name="file"
+                            accept="image/*"
+                        />
+                    </label>
+
+                    <button onClick={sendReport}>Save the report</button>
+                </div>
+            )}
+            {posts &&
+                posts.map((post, id) => {
+                    return (
+                        <div key={id}>
+                            <div className="info-window">
                                 <h3>{post.title}</h3>
-                                <p>{post.ts.toLocaleString("de-DE")}</p>
-                                <img src={post.image} />
+                                <p>{dateChange(post.ts)}</p>
+                                <img src={post.image || "/index.png"} />
                                 <p>{post.description}</p>
                                 <p>
-                                    This incident happend on:
-                                    {post.time_incident}
+                                    This incident happend on:{" "}
+                                    {dateChange(post.time_incident)}
                                 </p>
                             </div>
-                        );
-                    })}
-            </div> */}
+                        </div>
+                    );
+                })}
         </>
     );
 }

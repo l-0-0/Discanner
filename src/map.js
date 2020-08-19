@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "./axios";
 import Reports from "./report";
+import SearchBox from "./search";
 
 import {
     GoogleMap,
@@ -11,6 +12,7 @@ import {
 import mapStyle from "./mapStyle";
 
 const libraries = ["places"];
+const secrets = require("../secrets");
 
 export default function Map() {
     const [points, setPoints] = useState([]);
@@ -24,6 +26,7 @@ export default function Map() {
                 const { data } = await axios.get("/get-posts");
 
                 setAllPoints(data);
+
                 console.log("data getting from posts", data);
             } catch (err) {
                 console.log("error in getting posts: ", err);
@@ -52,7 +55,7 @@ export default function Map() {
     //two variables to know if our google script is ready and we
     //can start working with the map!
     const { isLoaded, loadError } = useLoadScript({
-        googleMapsApiKey: "AIzaSyC7Zs8RiI5LMRnOjuOPKOWmyXHwQi5C5Y8",
+        googleMapsApiKey: secrets.REACT_APP_GOOGLE_MAPS_API_KEY,
         //places library to be able to search
         libraries,
     });
@@ -83,6 +86,7 @@ export default function Map() {
 
     return (
         <>
+            <SearchBox />
             <button>report a case</button>
             {/* // put some info window inside this: */}
             <GoogleMap
@@ -146,12 +150,16 @@ export default function Map() {
                                 setCurrentMarker(null);
                             }}
                         >
-                            <div>
+                            <div className="info-window">
                                 <h3>{allPoints[currentMarker].title}</h3>
                                 <p>{dateChange(allPoints[currentMarker].ts)}</p>
-                                <img src={allPoints[currentMarker].image} />
+                                <img
+                                    src={
+                                        allPoints[currentMarker].image ||
+                                        "/index.png"
+                                    }
+                                />
                                 <p>{allPoints[currentMarker].description}</p>
-
                                 <p>
                                     This incident happend on:{" "}
                                     {dateChange(

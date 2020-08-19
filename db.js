@@ -19,6 +19,5 @@ module.exports.insertPosts = (post, time, title, lat, lng) => {
 
 module.exports.getAllPosts = () => {
     let q = `SELECT * FROM places ORDER BY ts DESC`;
-
     return db.query(q);
 };
