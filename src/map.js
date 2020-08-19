@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "./axios";
+import Reports from "./report";
 
 import {
     GoogleMap,
@@ -13,6 +15,21 @@ const libraries = ["places"];
 export default function Map() {
     const [points, setPoints] = useState([]);
     const [chosen, setChosen] = useState(null);
+    const [allPoints, setAllPoints] = useState();
+    const [currentMarker, setCurrentMarker] = useState(null);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const { data } = await axios.get("/get-posts");
+
+                setAllPoints(data);
+                console.log("data getting from posts", data);
+            } catch (err) {
+                console.log("error in getting posts: ", err);
+            }
+        })();
+    }, []);
 
     const center = {
         lat: 52.520008,
@@ -59,8 +76,14 @@ export default function Map() {
         ]);
     };
 
+    const dateChange = (time) => {
+        let newTime = new Date(time);
+        return newTime.toLocaleString("de-DE");
+    };
+
     return (
         <>
+            <button>report a case</button>
             {/* // put some info window inside this: */}
             <GoogleMap
                 mapContainerStyle={containerStyle}
@@ -73,7 +96,10 @@ export default function Map() {
                     points.map((point, id) => (
                         <Marker
                             key={id}
-                            position={{ lat: point.lat, lng: point.lng }}
+                            position={{
+                                lat: point.lat,
+                                lng: point.lng,
+                            }}
                             onClick={() => {
                                 setChosen(point);
                                 console.log("point", point);
@@ -82,16 +108,60 @@ export default function Map() {
                     ))}
                 {chosen && (
                     <InfoWindow
-                        position={{ lat: chosen.lat, lng: chosen.lng }}
+                        position={{
+                            lat: chosen.lat,
+                            lng: chosen.lng,
+                        }}
                         onCloseClick={() => {
                             setChosen(null);
                         }}
                     >
                         <div>
-                            <h3>Something has happened here</h3>
+                            <Reports lat={chosen.lat} lng={chosen.lng} />
                         </div>
                     </InfoWindow>
                 )}
+                <div>
+                    {allPoints &&
+                        allPoints.map((each, id) => {
+                            // console.log("each", each);
+                            return (
+                                <Marker
+                                    key={id}
+                                    position={{
+                                        lat: Number(each.lat),
+                                        lng: Number(each.lng),
+                                    }}
+                                    onClick={() => setCurrentMarker(id)}
+                                />
+                            );
+                        })}
+                    {currentMarker && (
+                        <InfoWindow
+                            position={{
+                                lat: Number(allPoints[currentMarker].lat),
+                                lng: Number(allPoints[currentMarker].lng),
+                            }}
+                            onCloseClick={() => {
+                                setCurrentMarker(null);
+                            }}
+                        >
+                            <div>
+                                <h3>{allPoints[currentMarker].title}</h3>
+                                <p>{dateChange(allPoints[currentMarker].ts)}</p>
+                                <img src={allPoints[currentMarker].image} />
+                                <p>{allPoints[currentMarker].description}</p>
+
+                                <p>
+                                    This incident happend on:{" "}
+                                    {dateChange(
+                                        allPoints[currentMarker].time_incident
+                                    )}
+                                </p>
+                            </div>
+                        </InfoWindow>
+                    )}
+                </div>
             </GoogleMap>
         </>
     );

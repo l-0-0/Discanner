@@ -6,11 +6,13 @@ DROP TABLE IF EXISTS places;
 
 CREATE TABLE places(
     id SERIAL PRIMARY KEY,
-    lat INT NOT NULL,
-    lng INT NOT NULL,
-    title VARCHAR NOT NULL CHECK (title <> ''),
+    lat Decimal(8,6) NOT NULL,
+    lng Decimal(9,6) NOT NULL,
+    address VARCHAR,
+    title VARCHAR,
     description VARCHAR NOT NULL CHECK (description <> ''),
     image VARCHAR,
+    time_incident VARCHAR NOT NULL,
     ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 

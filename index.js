@@ -57,6 +57,7 @@ const multer = require("multer");
 const uidSafe = require("uid-safe");
 const path = require("path");
 const { promises } = require("fs");
+const { ClientRequest } = require("http");
 
 const diskStorage = multer.diskStorage({
     destination: function (req, file, callback) {
@@ -80,6 +81,56 @@ const uploader = multer({
 
 app.get("/", function (req, res) {
     res.sendFile(__dirname + "/index.html");
+});
+
+app.post("/post-image", uploader.single("file"), s3.upload, (req, res) => {
+    console.log(req.body);
+    const { filename } = req.file;
+    const url = s3Url + filename;
+    db.postImage(
+        url,
+        req.body.inputs,
+        req.body.time,
+        req.body.title,
+        req.body.lat,
+        req.body.lng
+    )
+        .then((results) => {
+            // console.log("results.rows add image", results.rows[0]);
+            res.json(results.rows[0]);
+        })
+        .catch((err) => {
+            console.log("error in post the image", err);
+        });
+});
+
+app.post("/publish-report", (req, res) => {
+    // console.log(req.body);
+    db.insertPosts(
+        req.body.inputs,
+        req.body.time,
+        req.body.title,
+        req.body.lat,
+        req.body.lng
+    )
+        .then((results) => {
+            // console.log("results.rows", results.rows[0]);
+            res.json(results.rows[0]);
+        })
+        .catch((err) => {
+            console.log("error in inserting the posts", err);
+        });
+});
+
+app.get("/get-posts", (req, res) => {
+    db.getAllPosts()
+        .then((results) => {
+            console.log("results.rows", results.rows);
+            res.json(results.rows);
+        })
+        .catch((err) => {
+            console.log("error in getting all the posts", err);
+        });
 });
 
 app.listen(8080, function () {

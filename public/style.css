@@ -12,3 +12,28 @@ body {
     width: 100px;
     height: 100px;
 }
+
+.files {
+    visibility: hidden;
+}
+
+.label {
+    /* border: 2px solid #ec7d10; */
+    border-radius: 5px;
+    outline: none;
+    /* white-space: nowrap; */
+    width: 100px;
+    height: 50px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    padding-left: 40px;
+    padding-right: 40px;
+    color: #2f4858;
+    text-decoration: underline;
+}
+
+.label:hover {
+    color: #fc2f00;
+}
