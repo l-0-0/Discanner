@@ -2,7 +2,7 @@ const express = require("express");
 const db = require("./db");
 const cookieSession = require("cookie-session");
 const csurf = require("csurf");
-// const { hash, compare } = require("./bc");
+const { hash, compare } = require("./bc");
 // const { sendEmail } = require("./ses");
 const cryptoRandomString = require("crypto-random-string");
 const s3 = require("./s3");
@@ -79,8 +79,29 @@ const uploader = multer({
 
 //-----------------------------//
 
-app.get("/", function (req, res) {
-    res.sendFile(__dirname + "/index.html");
+app.post("/register", (req, res) => {
+    hash(req.body.password)
+        .then((hashedPw) => {
+            db.register(req.body.first, req.body.last, req.body.email, hashedPw)
+                .then((results) => {
+                    // console.log("hashed user password:", hashedPw);
+                    console.log(results.rows[0]);
+                    req.session.userId = results.rows[0].id;
+                    req.session.success = "true";
+                    res.json({
+                        success: "true",
+                    });
+                })
+                .catch((err) => {
+                    console.log("error in hash in POST register", err);
+                    res.json({
+                        success: "false",
+                    });
+                });
+        })
+        .catch((err) => {
+            console.log("error in send the info in POST register", err);
+        });
 });
 
 app.post("/post-image", uploader.single("file"), s3.upload, (req, res) => {
@@ -131,6 +152,55 @@ app.get("/get-posts", (req, res) => {
         .catch((err) => {
             console.log("error in getting all the posts", err);
         });
+});
+
+app.post("/login", (req, res) => {
+    db.getPassword(req.body.email)
+        .then((results) => {
+            // console.log("result", req.body.email, results.rows[0].password);
+            if (!results.rows[0]) {
+                res.json({
+                    success: "false",
+                });
+            } else {
+                // console.log(req.body.password, results.rows[0].password);
+                compare(req.body.password, results.rows[0].password)
+                    .then((matchValue) => {
+                        req.session.userId = results.rows[0].usersId;
+                        console.log(
+                            "does the user password match our hash in the database?",
+                            matchValue
+                        );
+                        if (matchValue) {
+                            req.session.userId = results.rows[0].id;
+                            req.session.success = "true";
+                            res.json({
+                                success: "true",
+                            });
+                        } else {
+                            res.json({
+                                success: "false",
+                            });
+                        }
+                    })
+                    .catch((err) => {
+                        console.log("error in maching the password", err);
+                        res.json({
+                            success: "false",
+                        });
+                    });
+            }
+        })
+        .catch((err) => {
+            console.log("error in getting the email and password", err);
+            res.json({
+                success: "false",
+            });
+        });
+});
+
+app.get("*", function (req, res) {
+    res.sendFile(__dirname + "/index.html");
 });
 
 app.listen(8080, function () {

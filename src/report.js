@@ -9,7 +9,6 @@ export default function Reports(props) {
     const [file, setFile] = useState();
     const [time, setTime] = useState();
     const [title, setTitle] = useState();
-    // const [details, setDetails] = useState();
     const [showDetails, setShowDetails] = useState(false);
 
     function sendReport() {

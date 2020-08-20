@@ -5,9 +5,18 @@ import usePlacesAutocomplete, {
     getLatLng,
 } from "use-places-autocomplete";
 
+import {
+    Combobox,
+    ComboboxInput,
+    ComboboxPopover,
+    ComboboxList,
+    ComboboxOption,
+    ComboboxOptionText,
+} from "@reach/combobox";
+// import "@reach/combobox/styles.css";
+
 export default function SearchBox() {
     const {
-        // ready,
         value,
         suggestions: { status, data },
         setValue,
@@ -24,10 +33,29 @@ export default function SearchBox() {
 
     return (
         <>
-            <div>
+            <Combobox
+                onSelect={(selected) => {
+                    console.log(selected);
+                }}
+            >
+                <ComboboxInput
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
+                    placeholder="Enter the address"
+                />
+                <ComboboxPopover>
+                    <ComboboxList>
+                        {status == "OK" &&
+                            data.map(({ description, id }) => (
+                                <ComboboxOption key={id} value={description} />
+                            ))}
+                    </ComboboxList>
+                </ComboboxPopover>
+            </Combobox>
+            {/* <div>
                 <input
                     value={value}
-                    type="text"
+                    type="search"
                     name="search"
                     placeholder="Enter the address"
                     onChange={(e) => setValue(e.target.value)}
@@ -45,7 +73,7 @@ export default function SearchBox() {
                             </div>
                         );
                     })}
-            </div>
+            </div> */}
         </>
     );
 }

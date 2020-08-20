@@ -17,6 +17,7 @@
         "@babel/polyfill": "^7.4.3",
         "@babel/preset-env": "^7.4.3",
         "@babel/preset-react": "^7.0.0",
+        "@reach/combobox": "^0.10.5",
         "@react-google-maps/api": "^1.9.12",
         "@testing-library/react": "^8.0.1",
         "aws-sdk": "^2.497.0",

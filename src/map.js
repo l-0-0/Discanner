@@ -87,7 +87,7 @@ export default function Map() {
     return (
         <>
             <SearchBox />
-            <button>report a case</button>
+
             {/* // put some info window inside this: */}
             <GoogleMap
                 mapContainerStyle={containerStyle}

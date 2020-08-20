@@ -1,17 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 import Logo from "./logo";
 import Map from "./map";
-import Reports from "./report";
-
-import { BrowserRouter, Route } from "react-router-dom";
+import Registration from "./register";
+import Login from "./login";
 
 export default function App() {
+    const [modal, setModal] = useState(false);
+    const [regComp, setRegComp] = useState(false);
+    const [logComp, setLogComp] = useState(false);
+
+    const toggleModal = () => {
+        setModal(true);
+    };
+
     return (
-        <BrowserRouter>
-            <>
-                <Logo />
-                <Map />
-            </>
-        </BrowserRouter>
+        <>
+            <div>
+                <button onClick={toggleModal}>report a case</button>
+            </div>
+            {modal && (
+                <div>
+                    <p
+                        onClick={() => {
+                            setLogComp(true);
+                        }}
+                    >
+                        {" "}
+                        Log in{" "}
+                    </p>
+                    <p
+                        onClick={() => {
+                            setRegComp(true);
+                        }}
+                    >
+                        {" "}
+                        Register yourself{" "}
+                    </p>
+                </div>
+            )}
+            {regComp && <Registration />}
+            {logComp && <Login />}
+            <Logo />
+            <Map />
+        </>
     );
 }

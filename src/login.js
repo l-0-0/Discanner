@@ -2,33 +2,26 @@ import React, { useState } from "react";
 import axios from "./axios";
 import Reports from "./report";
 
-export default function Registration() {
-    const [first, setFirst] = useState();
-    const [last, setLast] = useState();
+export default function Login() {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [error, setError] = useState(false);
     const [canReport, setCanReport] = useState(false);
 
-    const submit = () => {
+    const login = () => {
         axios
-            .post("/register", {
-                first,
-                last,
+            .post("/login", {
                 email,
                 password,
             })
             .then(({ data }) => {
-                console.log("data in register", data);
                 if (data.success) {
                     setCanReport(true);
                 } else {
                     setError(true);
                 }
             })
-            .catch((err) => {
-                console.log("error in registration: ", err);
-            });
+            .catch((err) => console.log("error in log in: ", err));
     };
 
     return (
@@ -36,20 +29,10 @@ export default function Registration() {
             <div className="forms">
                 {error && (
                     <div className="error">
-                        Oops! Something went wrong, try again!
+                        Something went wrong! Please try again.
                     </div>
                 )}
 
-                <input
-                    onChange={(e) => setFirst(e.target.value)}
-                    name="firstName"
-                    placeholder="First Name"
-                />
-                <input
-                    onChange={(e) => setLast(e.target.value)}
-                    name="lastName"
-                    placeholder="Last Name"
-                />
                 <input
                     onChange={(e) => setEmail(e.target.value)}
                     name="email"
@@ -61,11 +44,7 @@ export default function Registration() {
                     name="password"
                     placeholder="Password"
                 />
-                <button onClick={submit}>Submit</button>
-
-                <div className="welcome-link">
-                    <p>Are you already a member?</p>
-                </div>
+                <button onClick={login}>Log in</button>
             </div>
 
             {canReport && <Reports />}
