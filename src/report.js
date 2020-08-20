@@ -1,53 +1,64 @@
 import React, { useState, useEffect } from "react";
-import axios from "./axios";
+import FormToReport from "./formToReport";
 
-export default function Reports(props) {
-    const { lat, lng } = props;
-    // // console.log("props", props);
-    const [posts, setPosts] = useState([]);
-    const [inputs, setInputs] = useState();
-    const [file, setFile] = useState();
-    const [time, setTime] = useState();
-    const [title, setTitle] = useState();
-    const [showDetails, setShowDetails] = useState(false);
+import {
+    GoogleMap,
+    useLoadScript,
+    Marker,
+    InfoWindow,
+} from "@react-google-maps/api";
+import mapStyle from "./mapStyle";
 
-    function sendReport() {
-        let formData = new FormData();
-        formData.append("file", file);
-        formData.append("title", title);
-        formData.append("time", time);
-        formData.append("lat", lat);
-        formData.append("lng", lng);
-        formData.append("inputs", inputs);
+const libraries = ["places"];
+const secrets = require("../secrets");
 
-        if (document.getElementById("title").value == "") {
-            setTitle("");
-        }
-        if (file) {
-            axios
-                .post("/post-image", formData)
-                .then(({ data }) => {
-                    // console.log("data from post image", data);
-                    setPosts(data);
-                    // setPosts(data);
-                    setFile(null);
-                })
-                .catch((err) => console.log("error in post an image: ", err));
-        } else {
-            axios
-                .post("/publish-report", { inputs, time, title, lat, lng })
-                .then(({ data }) => {
-                    // console.log("data in publish post route", data);
-                    // setPosts([data, ...posts]);
-                    setPosts(data);
-                })
-                .catch((err) =>
-                    console.log("error in publish post route: ", err)
-                );
-            document.querySelector("textarea").value = "";
-            setInputs("");
-        }
-        setShowDetails(true);
+export default function Reports() {
+    const [points, setPoints] = useState([]);
+    const [chosen, setChosen] = useState(null);
+
+    const showThePoint = (e) => {
+        console.log("e", e);
+        setPoints((newPoint) => [
+            ...newPoint,
+            {
+                lat: e.latLng.lat(),
+                lng: e.latLng.lng(),
+                time: new Date(),
+            },
+        ]);
+    };
+
+    const center = {
+        lat: 52.520008,
+        lng: 13.404954,
+    };
+
+    const containerStyle = {
+        width: "100vw",
+        height: "100vh",
+    };
+
+    const options = {
+        styles: mapStyle,
+        //get rid of default things on the map
+        disableDefaultUI: true,
+        zoomControl: true,
+    };
+
+    //the hook gives us back isLoaded and loadError. we use these
+    //two variables to know if our google script is ready and we
+    //can start working with the map!
+    const { isLoaded, loadError } = useLoadScript({
+        googleMapsApiKey: secrets.REACT_APP_GOOGLE_MAPS_API_KEY,
+        //places library to be able to search
+        libraries,
+    });
+
+    if (loadError) {
+        return "there is an error in loading the map";
+    }
+    if (!isLoaded) {
+        return "loading map";
     }
 
     const dateChange = (time) => {
@@ -59,60 +70,43 @@ export default function Reports(props) {
 
     return (
         <>
-            {!showDetails && (
-                <div>
-                    <input
-                        type="datetime-local"
-                        name="time"
-                        placeholder="date and time"
-                        onChange={(e) => setTime(e.target.value)}
-                    />
-                    <input
-                        // onChange={(e) => this.handleChange(e)}
-
-                        id="title"
-                        name="title"
-                        placeholder="Title"
-                        onChange={(e) => setTitle(e.target.value)}
-                    />
-                    {/* defaultValue="" */}
-
-                    <textarea
-                        name="textarea"
-                        placeholder="Describe the happening!"
-                        onChange={(e) => setInputs(e.target.value)}
-                    ></textarea>
-                    <label className="label" id="post-label">
-                        Post an image!
-                        <input
-                            className="files"
-                            onChange={(e) => setFile(e.target.files[0])}
-                            type="file"
-                            name="file"
-                            accept="image/*"
+            <GoogleMap
+                mapContainerStyle={containerStyle}
+                center={center}
+                zoom={12}
+                options={options}
+                onClick={showThePoint}
+            >
+                {points &&
+                    points.map((point, id) => (
+                        <Marker
+                            key={id}
+                            position={{
+                                lat: point.lat,
+                                lng: point.lng,
+                            }}
+                            onClick={() => {
+                                setChosen(point);
+                                console.log("point", point);
+                            }}
                         />
-                    </label>
-
-                    <button onClick={sendReport}>Save the report</button>
-                </div>
-            )}
-            {posts &&
-                posts.map((post, id) => {
-                    return (
-                        <div key={id}>
-                            <div className="info-window">
-                                <h3>{post.title}</h3>
-                                <p>{dateChange(post.ts)}</p>
-                                <img src={post.image || "/index.png"} />
-                                <p>{post.description}</p>
-                                <p>
-                                    This incident happend on:{" "}
-                                    {dateChange(post.time_incident)}
-                                </p>
-                            </div>
+                    ))}
+                {chosen && (
+                    <InfoWindow
+                        position={{
+                            lat: chosen.lat,
+                            lng: chosen.lng,
+                        }}
+                        onCloseClick={() => {
+                            setChosen(null);
+                        }}
+                    >
+                        <div>
+                            <FormToReport lat={chosen.lat} lng={chosen.lng} />
                         </div>
-                    );
-                })}
+                    </InfoWindow>
+                )}
+            </GoogleMap>
         </>
     );
 }

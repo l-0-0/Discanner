@@ -85,11 +85,13 @@ app.post("/register", (req, res) => {
             db.register(req.body.first, req.body.last, req.body.email, hashedPw)
                 .then((results) => {
                     // console.log("hashed user password:", hashedPw);
-                    console.log(results.rows[0]);
-                    req.session.userId = results.rows[0].id;
+                    // console.log(results.rows[0]);
+                    let userId = results.rows[0].id;
+                    req.session.userId = userId;
                     req.session.success = "true";
                     res.json({
                         success: "true",
+                        data: results.rows,
                     });
                 })
                 .catch((err) => {
@@ -157,7 +159,7 @@ app.get("/get-posts", (req, res) => {
 app.post("/login", (req, res) => {
     db.getPassword(req.body.email)
         .then((results) => {
-            // console.log("result", req.body.email, results.rows[0].password);
+            console.log("result in login", results.rows[0]);
             if (!results.rows[0]) {
                 res.json({
                     success: "false",
@@ -172,10 +174,13 @@ app.post("/login", (req, res) => {
                             matchValue
                         );
                         if (matchValue) {
-                            req.session.userId = results.rows[0].id;
+                            let userId = results.rows[0].id;
+                            req.session.userId = userId;
                             req.session.success = "true";
+
                             res.json({
                                 success: "true",
+                                data: results.rows,
                             });
                         } else {
                             res.json({
@@ -197,6 +202,27 @@ app.post("/login", (req, res) => {
                 success: "false",
             });
         });
+});
+
+app.get("/user", (req, res) => {
+    db.userInfo(req.session.userId)
+        .then((results) => {
+            // console.log("user info: ", results.rows);
+
+            res.json(
+                results.rows
+                // success: "true",
+            );
+        })
+        .catch((err) => {
+            console.log("error in getting user info: ", err);
+        });
+});
+
+app.get("/logout", (req, res) => {
+    req.session.userId = null;
+    // console.log("your're logged out");
+    res.redirect("/");
 });
 
 app.get("*", function (req, res) {

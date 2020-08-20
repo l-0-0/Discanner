@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import axios from "./axios";
 import Reports from "./report";
 
-export default function Login() {
+export default function Login(props) {
+    let { isLogged } = props;
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [error, setError] = useState(false);
@@ -15,7 +16,9 @@ export default function Login() {
                 password,
             })
             .then(({ data }) => {
+                console.log("data in login", data);
                 if (data.success) {
+                    isLogged(data.data);
                     setCanReport(true);
                 } else {
                     setError(true);

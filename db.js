@@ -24,7 +24,7 @@ module.exports.getAllPosts = () => {
 
 module.exports.register = function (firstName, lastName, email, password) {
     let q =
-        "INSERT INTO users (first, last, email, password) VALUES ($1, $2, $3, $4) RETURNING id";
+        "INSERT INTO users (first, last, email, password) VALUES ($1, $2, $3, $4) RETURNING first, last, id";
     let params = [firstName, lastName, email, password];
     return db.query(q, params);
 };
@@ -32,5 +32,11 @@ module.exports.register = function (firstName, lastName, email, password) {
 module.exports.getPassword = function (email) {
     let q = "SELECT * FROM users WHERE email = $1";
     let params = [email];
+    return db.query(q, params);
+};
+
+module.exports.userInfo = function (id) {
+    let q = `SELECT id, first, last FROM users WHERE id=$1`;
+    let params = [id];
     return db.query(q, params);
 };

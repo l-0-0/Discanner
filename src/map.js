@@ -15,8 +15,8 @@ const libraries = ["places"];
 const secrets = require("../secrets");
 
 export default function Map() {
-    const [points, setPoints] = useState([]);
-    const [chosen, setChosen] = useState(null);
+    // const [points, setPoints] = useState([]);
+    // const [chosen, setChosen] = useState(null);
     const [allPoints, setAllPoints] = useState();
     const [currentMarker, setCurrentMarker] = useState(null);
 
@@ -67,17 +67,17 @@ export default function Map() {
         return "loading map";
     }
 
-    const showThePoint = (e) => {
-        console.log("e", e);
-        setPoints((newPoint) => [
-            ...newPoint,
-            {
-                lat: e.latLng.lat(),
-                lng: e.latLng.lng(),
-                time: new Date(),
-            },
-        ]);
-    };
+    // const showThePoint = (e) => {
+    //     console.log("e", e);
+    //     setPoints((newPoint) => [
+    //         ...newPoint,
+    //         {
+    //             lat: e.latLng.lat(),
+    //             lng: e.latLng.lng(),
+    //             time: new Date(),
+    //         },
+    //     ]);
+    // };
 
     const dateChange = (time) => {
         let newTime = new Date(time);
@@ -94,9 +94,8 @@ export default function Map() {
                 center={center}
                 zoom={12}
                 options={options}
-                onClick={showThePoint}
             >
-                {points &&
+                {/* {points &&
                     points.map((point, id) => (
                         <Marker
                             key={id}
@@ -109,8 +108,8 @@ export default function Map() {
                                 console.log("point", point);
                             }}
                         />
-                    ))}
-                {chosen && (
+                    ))} */}
+                {/* {chosen && (
                     <InfoWindow
                         position={{
                             lat: chosen.lat,
@@ -124,7 +123,7 @@ export default function Map() {
                             <Reports lat={chosen.lat} lng={chosen.lng} />
                         </div>
                     </InfoWindow>
-                )}
+                )} */}
                 <div>
                     {allPoints &&
                         allPoints.map((each, id) => {
