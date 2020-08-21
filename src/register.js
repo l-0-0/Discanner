@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "./axios";
-import Reports from "./report";
+// import Reports from "./report";
 
 export default function Registration(props) {
     let { isLogged } = props;
@@ -10,7 +10,7 @@ export default function Registration(props) {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [error, setError] = useState(false);
-    const [canReport, setCanReport] = useState(false);
+    // const [canReport, setCanReport] = useState(false);
     const [modal, setModal] = useState(false);
 
     const submit = () => {
@@ -25,7 +25,7 @@ export default function Registration(props) {
                 // console.log("data in register", data);
                 if (data.success) {
                     isLogged(data.data);
-                    setCanReport(true);
+                    // setCanReport(true);
                 } else {
                     setError(true);
                 }
@@ -73,7 +73,7 @@ export default function Registration(props) {
                 </div>
             </div>
 
-            {canReport && <Reports />}
+            {/* {canReport && <Reports />} */}
         </>
     );
 }

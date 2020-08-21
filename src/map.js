@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "./axios";
-import Reports from "./report";
+import FormToReport from "./formToReport";
 import SearchBox from "./search";
 
 import {
@@ -14,7 +14,8 @@ import mapStyle from "./mapStyle";
 const libraries = ["places"];
 const secrets = require("../secrets");
 
-export default function Map() {
+export default function Map(props) {
+    // let { userLogged } = props;
     // const [points, setPoints] = useState([]);
     // const [chosen, setChosen] = useState(null);
     const [allPoints, setAllPoints] = useState();
@@ -120,7 +121,7 @@ export default function Map() {
                         }}
                     >
                         <div>
-                            <Reports lat={chosen.lat} lng={chosen.lng} />
+                            <FormToReport lat={chosen.lat} lng={chosen.lng} />
                         </div>
                     </InfoWindow>
                 )} */}
@@ -135,6 +136,21 @@ export default function Map() {
                                         lat: Number(each.lat),
                                         lng: Number(each.lng),
                                     }}
+                                    // icon={{
+                                    //     url: "/points.png",
+                                    //     // scaledSize: new Window.google.maps.Size(
+                                    //     //     30,
+                                    //     //     30
+                                    //     // ),
+                                    //     // origin: new Window.google.maps.Point(
+                                    //     //     30,
+                                    //     //     30
+                                    //     // ),
+                                    //     // anchor: new Window.google.maps.Point(
+                                    //     //     15,
+                                    //     //     15
+                                    //     // ),
+                                    // }}
                                     onClick={() => setCurrentMarker(id)}
                                 />
                             );

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import FormToReport from "./formToReport";
+import SearchBox from "./search";
+import axios from "./axios";
 
 import {
     GoogleMap,
@@ -12,9 +14,23 @@ import mapStyle from "./mapStyle";
 const libraries = ["places"];
 const secrets = require("../secrets");
 
-export default function Reports() {
+export default function Reports(props) {
+    // let { isLogged } = props;
     const [points, setPoints] = useState([]);
     const [chosen, setChosen] = useState(null);
+    const [userPoints, setUserPoints] = useState();
+
+    // useEffect(() => {
+    //     (async () => {
+    //         try {
+    //             const { data } = await axios.get("/user-points", { points });
+
+    //             console.log("data in users route", data);
+    //         } catch (err) {
+    //             console.log("error in getting points: ", err);
+    //         }
+    //     })();
+    // }, []);
 
     const showThePoint = (e) => {
         console.log("e", e);
@@ -66,10 +82,11 @@ export default function Reports() {
         return newTime.toLocaleString("de-DE");
     };
 
-    // console.log("posts", posts);
+    console.log("props", props);
 
     return (
         <>
+            <SearchBox />
             <GoogleMap
                 mapContainerStyle={containerStyle}
                 center={center}
@@ -88,6 +105,12 @@ export default function Reports() {
                             onClick={() => {
                                 setChosen(point);
                                 console.log("point", point);
+                            }}
+                            icon={{
+                                url: "/points.png",
+                                scaledSize: new google.maps.Size(50, 50),
+                                origin: new google.maps.Point(30, 30),
+                                anchor: new google.maps.Point(25, 25),
                             }}
                         />
                     ))}

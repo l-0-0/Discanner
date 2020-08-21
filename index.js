@@ -148,7 +148,7 @@ app.post("/publish-report", (req, res) => {
 app.get("/get-posts", (req, res) => {
     db.getAllPosts()
         .then((results) => {
-            // console.log("results.rows", results.rows);
+            console.log("results.rows", results.rows);
             res.json(results.rows);
         })
         .catch((err) => {

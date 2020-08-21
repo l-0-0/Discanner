@@ -13,7 +13,6 @@ import {
     ComboboxOption,
     ComboboxOptionText,
 } from "@reach/combobox";
-// import "@reach/combobox/styles.css";
 
 export default function SearchBox() {
     const {

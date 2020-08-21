@@ -1,5 +1,7 @@
-
-
+1. how to turn on the points on click
+2. database
+3. qr code
+4. delete and edit button
 
 
 read about again:

@@ -40,3 +40,9 @@ module.exports.userInfo = function (id) {
     let params = [id];
     return db.query(q, params);
 };
+
+// module.exports.getUserpoints = function (id) {
+//     let q = `SELECT * FROM users JOIN places WHERE id=$1`;
+//     let params = [id];
+//     return db.query(q, params);
+// };

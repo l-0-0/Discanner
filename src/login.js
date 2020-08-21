@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import axios from "./axios";
-import Reports from "./report";
+// import Reports from "./report";
 
 export default function Login(props) {
     let { isLogged } = props;
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [error, setError] = useState(false);
-    const [canReport, setCanReport] = useState(false);
+    // const [canReport, setCanReport] = useState(false);
 
     const login = () => {
         axios
@@ -19,7 +19,7 @@ export default function Login(props) {
                 console.log("data in login", data);
                 if (data.success) {
                     isLogged(data.data);
-                    setCanReport(true);
+                    // setCanReport(true);
                 } else {
                     setError(true);
                 }
@@ -50,7 +50,7 @@ export default function Login(props) {
                 <button onClick={login}>Log in</button>
             </div>
 
-            {canReport && <Reports />}
+            {/* {canReport && <Reports />} */}
         </>
     );
 }

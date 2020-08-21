@@ -12,6 +12,8 @@ export default function App() {
     const [logComp, setLogComp] = useState(false);
     const [isLoggedIn, setIsLogedIn] = useState(false);
     const [users, setUsers] = useState();
+    const [button, setButton] = useState("Don't show the points");
+    const [showPoints, setShowPoints] = useState(true);
 
     useEffect(() => {
         (async () => {
@@ -37,6 +39,10 @@ export default function App() {
         }
     }, [users]);
 
+    // const userLogged = () => {
+    //     setIsLogedIn(true);
+    // };
+
     const isLogged = (data) => {
         setUsers(data);
     };
@@ -45,7 +51,15 @@ export default function App() {
         setModal(true);
     };
 
-    console.log("users", users);
+    // const showAll = () => {
+    //     if (button == "Show all the points") {
+    //         setButton("Don't show the points");
+    //     } else {
+    //         setButton("Show all the points");
+    //     }
+    // };
+
+    // console.log("users", users);
     return (
         <>
             <Logo />
@@ -55,6 +69,20 @@ export default function App() {
                 users.map((user, id) => {
                     return (
                         <div>
+                            <button
+                                onClick={() => {
+                                    if (button == "Don't show the points") {
+                                        setShowPoints(false);
+                                        setButton("Show all the points");
+                                    } else {
+                                        console.log("reports");
+                                        setShowPoints(true);
+                                        setButton("Don't show the points");
+                                    }
+                                }}
+                            >
+                                {button}
+                            </button>
                             <div key={id}>
                                 <p>
                                     {" "}
@@ -63,7 +91,8 @@ export default function App() {
                                 </p>
                                 <a href="/logout">Logout</a>
                             </div>
-                            <Reports />
+                            {showPoints ? <Map /> : <Reports />}
+                            {/* <Reports /> */}
                         </div>
                     );
                 })}
