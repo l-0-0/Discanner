@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import axios from "./axios";
 import FormToReport from "./formToReport";
 import SearchBox from "./search";
@@ -15,9 +15,6 @@ const libraries = ["places"];
 const secrets = require("../secrets");
 
 export default function Map(props) {
-    // let { userLogged } = props;
-    // const [points, setPoints] = useState([]);
-    // const [chosen, setChosen] = useState(null);
     const [allPoints, setAllPoints] = useState();
     const [currentMarker, setCurrentMarker] = useState(null);
 
@@ -52,6 +49,20 @@ export default function Map(props) {
         zoomControl: true,
     };
 
+    const mapRef = useRef();
+    const onLoad = useCallback((map) => {
+        mapRef.current = map;
+    }, []);
+
+    const panTo = useCallback(({ lat, lng }) => {
+        console.log("hello from outside");
+        // if (mapRef.current) {
+        console.log("hello from inside");
+        mapRef.current.panTo({ lat, lng });
+        mapRef.current.setZoom(16);
+        // }
+    }, []);
+
     //the hook gives us back isLoaded and loadError. we use these
     //two variables to know if our google script is ready and we
     //can start working with the map!
@@ -68,18 +79,6 @@ export default function Map(props) {
         return "loading map";
     }
 
-    // const showThePoint = (e) => {
-    //     console.log("e", e);
-    //     setPoints((newPoint) => [
-    //         ...newPoint,
-    //         {
-    //             lat: e.latLng.lat(),
-    //             lng: e.latLng.lng(),
-    //             time: new Date(),
-    //         },
-    //     ]);
-    // };
-
     const dateChange = (time) => {
         let newTime = new Date(time);
         return newTime.toLocaleString("de-DE");
@@ -87,7 +86,7 @@ export default function Map(props) {
 
     return (
         <>
-            <SearchBox />
+            <SearchBox panTo={panTo} />
 
             {/* // put some info window inside this: */}
             <GoogleMap
@@ -95,36 +94,8 @@ export default function Map(props) {
                 center={center}
                 zoom={12}
                 options={options}
+                onLoad={onLoad}
             >
-                {/* {points &&
-                    points.map((point, id) => (
-                        <Marker
-                            key={id}
-                            position={{
-                                lat: point.lat,
-                                lng: point.lng,
-                            }}
-                            onClick={() => {
-                                setChosen(point);
-                                console.log("point", point);
-                            }}
-                        />
-                    ))} */}
-                {/* {chosen && (
-                    <InfoWindow
-                        position={{
-                            lat: chosen.lat,
-                            lng: chosen.lng,
-                        }}
-                        onCloseClick={() => {
-                            setChosen(null);
-                        }}
-                    >
-                        <div>
-                            <FormToReport lat={chosen.lat} lng={chosen.lng} />
-                        </div>
-                    </InfoWindow>
-                )} */}
                 <div>
                     {allPoints &&
                         allPoints.map((each, id) => {
@@ -138,18 +109,12 @@ export default function Map(props) {
                                     }}
                                     // icon={{
                                     //     url: "/points.png",
-                                    //     // scaledSize: new Window.google.maps.Size(
-                                    //     //     30,
-                                    //     //     30
-                                    //     // ),
-                                    //     // origin: new Window.google.maps.Point(
-                                    //     //     30,
-                                    //     //     30
-                                    //     // ),
-                                    //     // anchor: new Window.google.maps.Point(
-                                    //     //     15,
-                                    //     //     15
-                                    //     // ),
+                                    //     scaledSize: new google.maps.Size(
+                                    //         30,
+                                    //         30
+                                    //     ),
+                                    //     origin: new google.maps.Point(0, 0),
+                                    //     anchor: new google.maps.Point(15, 15),
                                     // }}
                                     onClick={() => setCurrentMarker(id)}
                                 />

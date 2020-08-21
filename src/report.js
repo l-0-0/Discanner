@@ -108,9 +108,9 @@ export default function Reports(props) {
                             }}
                             icon={{
                                 url: "/points.png",
-                                scaledSize: new google.maps.Size(50, 50),
-                                origin: new google.maps.Point(30, 30),
-                                anchor: new google.maps.Point(25, 25),
+                                scaledSize: new google.maps.Size(40, 40),
+                                origin: new google.maps.Point(0, 0),
+                                anchor: new google.maps.Point(20, 20),
                             }}
                         />
                     ))}

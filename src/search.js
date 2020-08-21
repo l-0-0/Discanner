@@ -14,7 +14,8 @@ import {
     ComboboxOptionText,
 } from "@reach/combobox";
 
-export default function SearchBox() {
+export default function SearchBox(props) {
+    let { panTo } = props;
     const {
         value,
         suggestions: { status, data },
@@ -27,14 +28,31 @@ export default function SearchBox() {
         },
     });
 
-    console.log("data", data);
-    console.log("status", status);
+    const addressSelect = (address) => {
+        setValue(address, false);
+        // console.log("address :", address);
+
+        clearSuggestions();
+    };
+
+    // console.log("data", data);
+    // console.log("status", status);
 
     return (
         <>
             <Combobox
-                onSelect={(selected) => {
-                    console.log(selected);
+                onSelect={async (selected) => {
+                    addressSelect(selected);
+                    // console.log(selected);
+                    try {
+                        const results = await getGeocode({ address: selected });
+                        // console.log("selected", selected);
+                        const { lat, lng } = await getLatLng(results[0]);
+                        // console.log(lat, lng);
+                        panTo({ lat, lng });
+                    } catch (err) {
+                        console.log("error in onSelect", err);
+                    }
                 }}
             >
                 <ComboboxInput
