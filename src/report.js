@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import FormToReport from "./formToReport";
 import SearchBox from "./search";
-import axios from "./axios";
 
 import {
     GoogleMap,
@@ -15,25 +14,15 @@ const libraries = ["places"];
 const secrets = require("../secrets");
 
 export default function Reports(props) {
-    // let { isLogged } = props;
+    let { toggleModal } = props;
     const [points, setPoints] = useState([]);
     const [chosen, setChosen] = useState(null);
-    const [userPoints, setUserPoints] = useState();
-
-    // useEffect(() => {
-    //     (async () => {
-    //         try {
-    //             const { data } = await axios.get("/user-points", { points });
-
-    //             console.log("data in users route", data);
-    //         } catch (err) {
-    //             console.log("error in getting points: ", err);
-    //         }
-    //     })();
-    // }, []);
+    const [newCenter, setNewCenter] = useState();
 
     const showThePoint = (e) => {
         console.log("e", e);
+        let lat = e.latLng.lat();
+        let lng = e.latLng.lng();
         setPoints((newPoint) => [
             ...newPoint,
             {
@@ -42,9 +31,15 @@ export default function Reports(props) {
                 time: new Date(),
             },
         ]);
+        // console.log(lat, lng);
+        setNewCenter({
+            newLat: lat,
+            newLng: lng,
+        });
     };
+    // console.log(newCenter);
 
-    const center = {
+    let center = {
         lat: 52.520008,
         lng: 13.404954,
     };
@@ -60,6 +55,16 @@ export default function Reports(props) {
         disableDefaultUI: true,
         zoomControl: true,
     };
+
+    const mapRef = useRef();
+    const onLoad = useCallback((map) => {
+        mapRef.current = map;
+    }, []);
+
+    const panTo = useCallback(({ lat, lng }) => {
+        mapRef.current.panTo({ lat, lng });
+        mapRef.current.setZoom(14);
+    }, []);
 
     //the hook gives us back isLoaded and loadError. we use these
     //two variables to know if our google script is ready and we
@@ -82,17 +87,20 @@ export default function Reports(props) {
         return newTime.toLocaleString("de-DE");
     };
 
-    console.log("props", props);
-
     return (
         <>
-            <SearchBox />
+            <SearchBox panTo={panTo} />
             <GoogleMap
                 mapContainerStyle={containerStyle}
-                center={center}
+                center={
+                    newCenter
+                        ? { lat: newCenter.newLat, lng: newCenter.newLng }
+                        : center
+                }
                 zoom={12}
                 options={options}
                 onClick={showThePoint}
+                onLoad={onLoad}
             >
                 {points &&
                     points.map((point, id) => (
@@ -104,6 +112,7 @@ export default function Reports(props) {
                             }}
                             onClick={() => {
                                 setChosen(point);
+
                                 console.log("point", point);
                             }}
                             icon={{
@@ -125,7 +134,11 @@ export default function Reports(props) {
                         }}
                     >
                         <div>
-                            <FormToReport lat={chosen.lat} lng={chosen.lng} />
+                            <FormToReport
+                                toggleModal={toggleModal}
+                                lat={chosen.lat}
+                                lng={chosen.lng}
+                            />
                         </div>
                     </InfoWindow>
                 )}

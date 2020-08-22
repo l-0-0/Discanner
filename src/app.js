@@ -19,7 +19,8 @@ export default function App() {
         (async () => {
             try {
                 const { data } = await axios.get("/user");
-                // console.log("data in users route", data);
+
+                console.log("data in users route", data);
 
                 if (data.length != 0) {
                     setIsLogedIn(true);
@@ -91,7 +92,11 @@ export default function App() {
                                 </p>
                                 <a href="/logout">Logout</a>
                             </div>
-                            {showPoints ? <Map /> : <Reports />}
+                            {showPoints ? (
+                                <Map />
+                            ) : (
+                                <Reports toggleModal={toggleModal} />
+                            )}
                             {/* <Reports /> */}
                         </div>
                     );
@@ -127,8 +132,6 @@ export default function App() {
                     <Map />
                 </div>
             )}
-
-            {/* <Map /> */}
         </>
     );
 }

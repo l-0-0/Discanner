@@ -16,13 +16,14 @@ CREATE TABLE users(
 
 CREATE TABLE places(
     id SERIAL PRIMARY KEY,
-    lat Decimal(8,6) NOT NULL,
-    lng Decimal(9,6) NOT NULL,
+    lat Decimal(18,15) NOT NULL,
+    lng Decimal(18,15) NOT NULL,
     address VARCHAR,
     title VARCHAR,
-    description VARCHAR NOT NULL CHECK (description <> ''),
+    description VARCHAR,
     image VARCHAR,
-    time_incident VARCHAR NOT NULL,
+    time_incident VARCHAR,
+    sender_id INT REFERENCES users(id) NOT NULL,
     ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 

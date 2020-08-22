@@ -3,17 +3,17 @@ const db = spicedPg(
     process.env.DATABASE_URL || "postgres:postgres:Hoda@localhost:5432/antira"
 );
 
-module.exports.postImage = (url, post, time, title, lat, lng) => {
-    let q = `INSERT INTO places (image, description, time_incident, title, lat, lng) 
-    VALUES($1, $2, $3, $4, $5, $6) RETURNING *`;
-    let params = [url, post, time, title, lat, lng];
+module.exports.postImage = (id, url, post, time, title, lat, lng) => {
+    let q = `INSERT INTO places (sender_id, image, description, time_incident, title, lat, lng) 
+    VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *`;
+    let params = [id, url, post, time, title, lat, lng];
     return db.query(q, params);
 };
 
-module.exports.insertPosts = (post, time, title, lat, lng) => {
-    let q = `INSERT INTO places (description, time_incident, title, lat, lng) 
-    VALUES($1, $2, $3, $4, $5) RETURNING *`;
-    let params = [post, time, title, lat, lng];
+module.exports.insertPosts = (id, post, time, title, lat, lng) => {
+    let q = `INSERT INTO places (sender_id, description, time_incident, title, lat, lng) 
+    VALUES($1, $2, $3, $4, $5, $6) RETURNING *`;
+    let params = [id, post, time, title, lat, lng];
     return db.query(q, params);
 };
 
@@ -41,8 +41,15 @@ module.exports.userInfo = function (id) {
     return db.query(q, params);
 };
 
-// module.exports.getUserpoints = function (id) {
-//     let q = `SELECT * FROM users JOIN places WHERE id=$1`;
-//     let params = [id];
-//     return db.query(q, params);
-// };
+module.exports.updateImage = (lat, lng, url) => {
+    let q = `UPDATE places SET image=$3 
+    WHERE lat=$1 AND lng=$2 RETURNING *`;
+    let params = [lat, lng, url];
+    return db.query(q, params);
+};
+module.exports.updateReport = (lat, lng, posts, time, title) => {
+    let q = `UPDATE places SET description=$3, time_incident= $4, title=$5 
+    WHERE lat=$1 AND lng=$2 RETURNING *`;
+    let params = [lat, lng, posts, time, title];
+    return db.query(q, params);
+};

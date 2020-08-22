@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import axios from "./axios";
 import FormToReport from "./formToReport";
 import SearchBox from "./search";
+import QRCodeGenerator from "./qr";
 
 import {
     GoogleMap,
@@ -14,7 +15,7 @@ import mapStyle from "./mapStyle";
 const libraries = ["places"];
 const secrets = require("../secrets");
 
-export default function Map(props) {
+export default function Map() {
     const [allPoints, setAllPoints] = useState();
     const [currentMarker, setCurrentMarker] = useState(null);
 
@@ -24,7 +25,6 @@ export default function Map(props) {
                 const { data } = await axios.get("/get-posts");
 
                 setAllPoints(data);
-
                 console.log("data getting from posts", data);
             } catch (err) {
                 console.log("error in getting posts: ", err);
@@ -59,7 +59,7 @@ export default function Map(props) {
         // if (mapRef.current) {
         console.log("hello from inside");
         mapRef.current.panTo({ lat, lng });
-        mapRef.current.setZoom(16);
+        mapRef.current.setZoom(14);
         // }
     }, []);
 
@@ -146,6 +146,12 @@ export default function Map(props) {
                                         allPoints[currentMarker].time_incident
                                     )}
                                 </p>
+
+                                <QRCodeGenerator
+                                    id={allPoints[currentMarker].id}
+                                    text="https://reachoutberlin.de/sites/default/files/chronik-2020_0.pdf/"
+                                    size={100}
+                                />
                             </div>
                         </InfoWindow>
                     )}

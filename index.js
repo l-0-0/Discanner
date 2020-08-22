@@ -111,6 +111,7 @@ app.post("/post-image", uploader.single("file"), s3.upload, (req, res) => {
     const { filename } = req.file;
     const url = s3Url + filename;
     db.postImage(
+        req.session.userId,
         url,
         req.body.inputs,
         req.body.time,
@@ -127,9 +128,40 @@ app.post("/post-image", uploader.single("file"), s3.upload, (req, res) => {
         });
 });
 
+app.post("/update-image", uploader.single("file"), s3.upload, (req, res) => {
+    const { filename } = req.file;
+    const url = s3Url + filename;
+    db.updateImage(req.body.lat, req.body.lng, url)
+        .then((results) => {
+            console.log("results.rows update:", results.rows);
+            res.json(results.rows);
+        })
+        .catch((err) => {
+            console.log("error in update image: ", err);
+        });
+});
+
+app.post("/update-report", (req, res) => {
+    console.log("req.body", req.body);
+    db.updateReport(
+        req.body.lat,
+        req.body.lng,
+        req.body.inputs,
+        req.body.time,
+        req.body.title
+    )
+        .then((results) => {
+            console.log("results.rows", results.rows);
+            res.json(results.rows);
+        })
+        .catch((err) => {
+            console.log("error in update: ", err);
+        });
+});
 app.post("/publish-report", (req, res) => {
     // console.log(req.body);
     db.insertPosts(
+        req.session.userId,
         req.body.inputs,
         req.body.time,
         req.body.title,
@@ -148,7 +180,7 @@ app.post("/publish-report", (req, res) => {
 app.get("/get-posts", (req, res) => {
     db.getAllPosts()
         .then((results) => {
-            console.log("results.rows", results.rows);
+            // console.log("results.rows", results.rows);
             res.json(results.rows);
         })
         .catch((err) => {

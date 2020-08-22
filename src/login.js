@@ -16,7 +16,7 @@ export default function Login(props) {
                 password,
             })
             .then(({ data }) => {
-                console.log("data in login", data);
+                // console.log("data in login", data);
                 if (data.success) {
                     isLogged(data.data);
                     // setCanReport(true);
