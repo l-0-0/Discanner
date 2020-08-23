@@ -35,7 +35,7 @@ export default function SearchBox(props) {
     };
 
     return (
-        <>
+        <div id="search">
             <Combobox
                 onSelect={async (selected) => {
                     addressSelect(selected);
@@ -54,7 +54,7 @@ export default function SearchBox(props) {
                 <ComboboxInput
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
-                    placeholder="Enter the address"
+                    placeholder="Search for the address"
                 />
                 <ComboboxPopover>
                     <ComboboxList>
@@ -65,6 +65,6 @@ export default function SearchBox(props) {
                     </ComboboxList>
                 </ComboboxPopover>
             </Combobox>
-        </>
+        </div>
     );
 }

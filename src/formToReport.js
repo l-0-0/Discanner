@@ -11,6 +11,7 @@ export default function FormToReport(props) {
     const [title, setTitle] = useState();
     const [showDetails, setShowDetails] = useState(false);
     const [button, setButton] = useState("Save");
+    const [edit, setEdit] = useState(false);
 
     function sendReport() {
         let formData = new FormData();
@@ -48,6 +49,8 @@ export default function FormToReport(props) {
                     console.log("data in publish post route", data[0].id);
 
                     setPosts(data);
+                    const info = data[0].description;
+
                     getInfo(data);
                 })
                 .catch((err) =>
@@ -58,6 +61,8 @@ export default function FormToReport(props) {
         }
         setShowDetails(true);
     }
+
+    console.log("posts", posts);
 
     const editReport = () => {
         setShowDetails(false);
@@ -109,10 +114,11 @@ export default function FormToReport(props) {
             sendReport();
             setButton("Edit");
         } else if (button == "Edit") {
-            setShowDetails(false);
+            // setShowDetails(false);
+            setEdit(true);
             setButton("Save the changes");
-            // setPosts(null);
         } else if (button == "Save the changes") {
+            setEdit(false);
             editReport();
             setButton("Edit");
         }
@@ -122,17 +128,15 @@ export default function FormToReport(props) {
 
     return (
         <>
-            {!showDetails && (
-                <div>
+            {!edit && !showDetails && (
+                <div id="insert-info">
                     <input
-                        defaultValue={time}
                         type="datetime-local"
                         name="time"
                         placeholder="date and time"
                         onChange={(e) => setTime(e.target.value)}
                     />
                     <input
-                        defaultValue={title}
                         id="title"
                         name="title"
                         placeholder="Title"
@@ -140,7 +144,6 @@ export default function FormToReport(props) {
                     />
 
                     <textarea
-                        defaultValue={inputs}
                         name="textarea"
                         placeholder="Describe the happening!"
                         onChange={(e) => setInputs(e.target.value)}
@@ -159,16 +162,56 @@ export default function FormToReport(props) {
                 </div>
             )}
 
-            {posts &&
+            {edit && posts && (
+                <div id="insert-info">
+                    <input
+                        defaultValue={posts[0].time_incident}
+                        type="datetime-local"
+                        name="time"
+                        placeholder="date and time"
+                        onChange={(e) => setTime(e.target.value)}
+                    />
+                    <input
+                        defaultValue={posts[0].title}
+                        id="title"
+                        name="title"
+                        placeholder="Title"
+                        onChange={(e) => setTitle(e.target.value)}
+                    />
+
+                    <textarea
+                        defaultValue={posts[0].description}
+                        name="textarea"
+                        placeholder="Describe the happening!"
+                        onChange={(e) => setInputs(e.target.value)}
+                    ></textarea>
+
+                    <label className="label" id="post-label">
+                        Upload an image!
+                        <input
+                            className="files"
+                            onChange={(e) => setFile(e.target.files[0])}
+                            type="file"
+                            name="file"
+                            accept="image/*"
+                        />
+                    </label>
+                </div>
+            )}
+
+            {!edit &&
+                posts &&
                 posts.map((post, id) => {
                     return (
                         <>
                             <div key={id}>
                                 <div className="info-window">
-                                    <h3>{post.title}</h3>
-                                    <p>{dateChange(post.ts)}</p>
+                                    <h2> {post.title}</h2>
+                                    <p>posted on: {dateChange(post.ts)}</p>
                                     <img src={post.image || "/index.png"} />
-                                    <p>{post.description}</p>
+
+                                    <p className="desc">{post.description}</p>
+
                                     <p>
                                         This incident happend on:{" "}
                                         {dateChange(post.time_incident)}
@@ -179,7 +222,9 @@ export default function FormToReport(props) {
                     );
                 })}
 
-            <button onClick={buttonFunc}>{button}</button>
+            <button id="change-button" onClick={buttonFunc}>
+                {button}
+            </button>
         </>
     );
 }

@@ -91,7 +91,7 @@ export default function Reports(props) {
     // // console.log("pointInfo", pointInfo);
 
     return (
-        <>
+        <div id="map-main">
             <SearchBox panTo={panTo} />
             <GoogleMap
                 mapContainerStyle={containerStyle}
@@ -120,8 +120,8 @@ export default function Reports(props) {
                                 console.log("point", point.pointInfo);
                             }}
                             icon={{
-                                url: "/points.png",
-                                scaledSize: new google.maps.Size(40, 40),
+                                url: "/ar.png",
+                                scaledSize: new google.maps.Size(60, 60),
                                 origin: new google.maps.Point(0, 0),
                                 anchor: new google.maps.Point(20, 20),
                             }}
@@ -180,6 +180,6 @@ export default function Reports(props) {
                     </InfoWindow>
                 )}
             </GoogleMap>
-        </>
+        </div>
     );
 }

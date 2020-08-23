@@ -55,8 +55,7 @@ export default function Map() {
 
     const panTo = useCallback(({ lat, lng }) => {
         mapRef.current.panTo({ lat, lng });
-        mapRef.current.setZoom(16);
-        // }
+        mapRef.current.setZoom(15);
     }, []);
 
     //the hook gives us back isLoaded and loadError. we use these
@@ -81,18 +80,18 @@ export default function Map() {
     };
 
     return (
-        <>
+        <div id="map-main">
             <SearchBox panTo={panTo} />
 
             {/* // put some info window inside this: */}
             <GoogleMap
                 mapContainerStyle={containerStyle}
                 center={center}
-                zoom={12}
+                zoom={13}
                 options={options}
                 onLoad={onLoad}
             >
-                <div>
+                <div id="map-main">
                     {allPoints &&
                         allPoints.map((each, id) => {
                             // console.log("each", each);
@@ -103,15 +102,15 @@ export default function Map() {
                                         lat: Number(each.lat),
                                         lng: Number(each.lng),
                                     }}
-                                    // icon={{
-                                    //     url: "/points.png",
-                                    //     scaledSize: new google.maps.Size(
-                                    //         30,
-                                    //         30
-                                    //     ),
-                                    //     origin: new google.maps.Point(0, 0),
-                                    //     anchor: new google.maps.Point(15, 15),
-                                    // }}
+                                    icon={{
+                                        url: "/tt.png",
+                                        scaledSize: new google.maps.Size(
+                                            40,
+                                            40
+                                        ),
+                                        origin: new google.maps.Point(0, 0),
+                                        anchor: new google.maps.Point(20, 20),
+                                    }}
                                     onClick={() => {
                                         console.log(id);
                                         setCurrentMarker(id);
@@ -138,7 +137,11 @@ export default function Map() {
                                         "/index.png"
                                     }
                                 />
-                                <p>{allPoints[currentMarker].description}</p>
+                                <div className="desc">
+                                    <p>
+                                        {allPoints[currentMarker].description}
+                                    </p>
+                                </div>
                                 <p>
                                     This incident happend on:{" "}
                                     {dateChange(
@@ -148,7 +151,7 @@ export default function Map() {
 
                                 <QRCodeGenerator
                                     id={allPoints[currentMarker].id}
-                                    text="https://reachoutberlin.de/sites/default/files/chronik-2020_0.pdf/"
+                                    text="http://localhost:8080/"
                                     size={100}
                                 />
                             </div>
@@ -156,6 +159,6 @@ export default function Map() {
                     )}
                 </div>
             </GoogleMap>
-        </>
+        </div>
     );
 }

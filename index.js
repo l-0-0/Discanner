@@ -3,7 +3,7 @@ const db = require("./db");
 const cookieSession = require("cookie-session");
 const csurf = require("csurf");
 const { hash, compare } = require("./bc");
-// const { sendEmail } = require("./ses");
+
 const cryptoRandomString = require("crypto-random-string");
 const s3 = require("./s3");
 const { s3Url } = require("./config");

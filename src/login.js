@@ -7,7 +7,6 @@ export default function Login(props) {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [error, setError] = useState(false);
-    // const [canReport, setCanReport] = useState(false);
 
     const login = () => {
         axios
@@ -28,7 +27,7 @@ export default function Login(props) {
     };
 
     return (
-        <>
+        <div className="back">
             <div className="forms">
                 {error && (
                     <div className="error">
@@ -49,8 +48,6 @@ export default function Login(props) {
                 />
                 <button onClick={login}>Log in</button>
             </div>
-
-            {/* {canReport && <Reports />} */}
-        </>
+        </div>
     );
 }

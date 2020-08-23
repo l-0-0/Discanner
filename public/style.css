@@ -1,16 +1,18 @@
 body {
     margin: 0;
     color: #2f4858;
-    font-family: "Roboto", sans-serif;
+    font-family: "Source Sans Pro", sans-serif;
 }
 
 .logo-small {
     float: left;
-    margin-left: 15px;
-    margin-top: 10px;
     border-radius: 5px;
-    width: 100px;
-    height: 100px;
+    width: 180px;
+    height: 180px;
+    z-index: 9;
+    margin: 0;
+    padding: 0;
+    position: absolute;
 }
 
 .files {
@@ -18,34 +20,278 @@ body {
 }
 
 .label {
-    /* border: 2px solid #ec7d10; */
+    border: 2px solid #2f4858;
     border-radius: 5px;
+    background-color: #9da9a0;
     outline: none;
-    /* white-space: nowrap; */
-    width: 100px;
-    height: 50px;
-    font-size: 20px;
-    font-weight: bold;
+    white-space: nowrap;
+    height: 40px;
+    width: 132px;
     cursor: pointer;
-    margin-top: 10px;
-    padding-left: 40px;
-    padding-right: 40px;
-    color: #2f4858;
-    text-decoration: underline;
+    margin-top: 18px;
+    font-size: 15px;
+    padding-left: 67px;
+    padding-right: 45px;
+    text-align: center;
+    color: black;
+    font-weight: bold;
+    box-shadow: -1px 2px 7px 5px hsla(0, 0%, 0%, 0.25);
 }
 
 .label:hover {
-    color: #fc2f00;
+    background-color: #c40001;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
 }
 
 .info-window {
-    width: 500px;
-    height: 600px;
+    min-width: 500px;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
+
 .info-window img {
     width: 300px;
     height: 300px;
+    align-self: center;
+    object-fit: cover;
+    overflow: hidden;
 }
+
+.info-window p {
+    font-size: 18px;
+    align-self: center;
+}
+
+.desc {
+    max-width: 450px;
+    align-self: center;
+    max-height: 300px;
+    overflow-y: scroll;
+    padding-left: 10px;
+}
+
+#change-button {
+    margin-left: 8rem;
+}
+button {
+    width: 250px;
+    height: 50px;
+    font-size: 15px;
+    font-weight: bold;
+    margin: 30px;
+    text-align: center;
+    transition: 0.3s;
+    border: 2px solid #2f4858;
+    border-radius: 5px;
+    background-color: #9da9a0;
+    box-shadow: -1px 2px 7px 5px hsla(0, 0%, 0%, 0.25);
+    /* z-index: 9; */
+}
+
+button:hover {
+    background-color: #c40001;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+input {
+    z-index: 10;
+    height: 40px;
+    width: 250px;
+    font-size: 17px;
+    text-align: center;
+    border-radius: 5px;
+    border: 2px solid #2f4858;
+}
+
+.main-div {
+    position: relative;
+}
+
+#map-main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -20;
+}
+
+#search {
+    position: absolute;
+    left: 81rem;
+    top: 30px;
+    z-index: 10;
+    box-shadow: -1px 2px 7px 5px hsla(0, 0%, 0%, 0.25);
+    background-color: hsl(0deg 0% 100%);
+}
+
+.forms {
+    width: 670px;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.forms input {
+    margin-top: 20px;
+}
+
+.back {
+    background-color: rgba(39, 38, 38, 0.8);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    min-height: 100%;
+    max-height: 100vh;
+    /* z-index: 2; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.5s;
+    font-family: "Source Sans Pro", sans-serif;
+    overflow: hidden;
+}
+
+.modal {
+    position: absolute;
+    top: 32rem;
+    left: 2rem;
+    width: 250px;
+    /* z-index: 10; */
+}
+
+.modal h2 {
+    padding-left: 20px;
+    height: 40px;
+    padding-top: 10px;
+    width: 230px;
+    box-shadow: -1px 2px 7px 5px hsla(0, 0%, 0%, 0.25);
+    background-color: hsl(0deg 0% 100%);
+}
+
+.modal h2:hover {
+    background-color: #c40001;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.report-button {
+    top: 40rem;
+    position: absolute;
+    left: 0;
+    /* z-index: 10; */
+}
+
+.logout {
+    position: absolute;
+    top: 37rem;
+    left: 2rem;
+    width: 250px;
+    box-shadow: -1px 2px 7px 5px hsla(0, 0%, 0%, 0.25);
+    background-color: hsl(0deg 0% 100%);
+    height: 40px;
+    border-radius: 5px;
+}
+
+/* .logout h2 {
+    padding-left: 20px;
+    height: 40px;
+    padding-top: 10px;
+    width: 230px;
+    /* box-shadow: -1px 2px 7px 5px hsla(0, 0%, 0%, 0.25);
+    background-color: hsl(0deg 0% 100%); */
+/* } */
+.logout a {
+    text-decoration: none;
+    color: #2f4858;
+    padding-left: 20px;
+    height: 40px;
+    padding-top: 10px;
+    width: 230px;
+}
+
+.logout:hover {
+    background-color: #c40001;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#text {
+    position: absolute;
+    left: 11.5rem;
+    font-size: 20px;
+    line-height: 0.6;
+    border-radius: 5px;
+    padding-left: 15px;
+    margin-top: 10px;
+    box-shadow: -1px 2px 7px 5px hsla(0, 0%, 0%, 0.25);
+    background-color: hsl(0deg 0% 100%);
+    min-width: 120px;
+}
+
+#text-logo {
+    color: white;
+    position: absolute;
+    top: 16rem;
+    left: -2.3rem;
+    font-size: 51px;
+    font-weight: 600;
+    border-radius: 5px;
+    padding: 4px;
+    margin-top: 11px;
+    box-shadow: -1px 2px 7px 5px hsla(0, 0%, 0%, 0.25);
+    transform: rotate(270deg);
+    padding-left: 15px;
+    background-color: hsl(0deg 41% 5%);
+    padding-right: 15px;
+    z-index: 9;
+}
+
+textarea {
+    width: 250px;
+    height: 150px;
+    font-size: 18px;
+    padding: 20px;
+    border-radius: 5px;
+    border: 2px solid #2f4858;
+}
+#insert-info {
+    min-width: 500px;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    align-items: center;
+}
+
+#insert-info input {
+    height: 40px;
+    width: 250px;
+    font-size: 18px;
+    text-align: center;
+    border-radius: 5px;
+    border: 2px solid #2f4858;
+    margin-bottom: 20px;
+}
+
+/* //comboBox style */
 
 :root {
     --reach-combobox: 1;
@@ -85,3 +331,5 @@ body {
 [data-suggested-value] {
     font-weight: bold;
 }
+
+/* //////// */

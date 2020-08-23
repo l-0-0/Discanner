@@ -37,7 +37,7 @@ export default function Registration(props) {
     };
 
     return (
-        <>
+        <div className="back">
             <div className="forms">
                 {error && (
                     <div className="error">
@@ -67,13 +67,7 @@ export default function Registration(props) {
                     placeholder="Password"
                 />
                 <button onClick={submit}>Submit</button>
-
-                <div className="welcome-link">
-                    <p>Are you already a member?</p>
-                </div>
             </div>
-
-            {/* {canReport && <Reports />} */}
-        </>
+        </div>
     );
 }

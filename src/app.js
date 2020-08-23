@@ -14,6 +14,7 @@ export default function App() {
     const [users, setUsers] = useState();
     const [button, setButton] = useState("Don't show the points");
     const [showPoints, setShowPoints] = useState(true);
+    const [window, setWindow] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -49,21 +50,65 @@ export default function App() {
     };
 
     const toggleModal = () => {
-        setModal(true);
+        if (modal == false) {
+            setModal(true);
+        } else {
+            setModal(false);
+        }
     };
 
-    // const showAll = () => {
-    //     if (button == "Show all the points") {
-    //         setButton("Don't show the points");
-    //     } else {
-    //         setButton("Show all the points");
-    //     }
-    // };
+    const showWindow = () => {
+        if (window == false) {
+            setWindow(true);
+        } else {
+            setWindow(false);
+        }
+    };
 
-    // console.log("users", users);
     return (
         <>
-            <Logo />
+            <div className="main-div">
+                <Logo />
+                <p>DiScanner scannes the topography of violence.</p>
+                <p></p>
+
+                {!isLoggedIn && (
+                    <>
+                        <div>
+                            <p id="text-logo">DiScanner</p>
+                        </div>
+                        <button className="report-button" onClick={toggleModal}>
+                            Report a case
+                        </button>
+
+                        {modal && (
+                            <div className="modal">
+                                <h2
+                                    onClick={() => {
+                                        setLogComp(true);
+                                        showWindow();
+                                    }}
+                                >
+                                    {" "}
+                                    Log in{" "}
+                                </h2>
+                                <h2
+                                    onClick={() => {
+                                        setRegComp(true);
+                                    }}
+                                >
+                                    {" "}
+                                    Register yourself{" "}
+                                </h2>
+                            </div>
+                        )}
+
+                        {regComp && <Registration isLogged={isLogged} />}
+                        {logComp && <Login isLogged={isLogged} />}
+                        <Map />
+                    </>
+                )}
+            </div>
 
             {isLoggedIn &&
                 users &&
@@ -71,6 +116,7 @@ export default function App() {
                     return (
                         <div>
                             <button
+                                className="report-button"
                                 onClick={() => {
                                     if (button == "Don't show the points") {
                                         setShowPoints(false);
@@ -85,53 +131,20 @@ export default function App() {
                                 {button}
                             </button>
                             <div key={id}>
-                                <p>
-                                    {" "}
-                                    welcome {user.first} {user.last} to X-ray
-                                    Berlin
-                                </p>
-                                <a href="/logout">Logout</a>
+                                <p id="text-logo">DiScanner</p>
+                                <div id="text">
+                                    <p> welcome {user.first}!</p>
+                                </div>
+                                <div>
+                                    <h2 className="logout">
+                                        <a href="/logout">Logout</a>
+                                    </h2>
+                                </div>
                             </div>
-                            {showPoints ? (
-                                <Map />
-                            ) : (
-                                <Reports toggleModal={toggleModal} />
-                            )}
-                            {/* <Reports /> */}
+                            {showPoints ? <Map /> : <Reports />}
                         </div>
                     );
                 })}
-
-            {!isLoggedIn && (
-                <div>
-                    <div>
-                        <button onClick={toggleModal}>report a case</button>
-                    </div>
-                    {modal && (
-                        <div>
-                            <p
-                                onClick={() => {
-                                    setLogComp(true);
-                                }}
-                            >
-                                {" "}
-                                Log in{" "}
-                            </p>
-                            <p
-                                onClick={() => {
-                                    setRegComp(true);
-                                }}
-                            >
-                                {" "}
-                                Register yourself{" "}
-                            </p>
-                        </div>
-                    )}
-                    {regComp && <Registration isLogged={isLogged} />}
-                    {logComp && <Login isLogged={isLogged} />}
-                    <Map />
-                </div>
-            )}
         </>
     );
 }
