@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback } from "react";
 import FormToReport from "./formToReport";
 import SearchBox from "./search";
+import axios from "./axios";
 
 import {
     GoogleMap,
@@ -14,10 +15,10 @@ const libraries = ["places"];
 const secrets = require("../secrets");
 
 export default function Reports(props) {
-    let { toggleModal } = props;
     const [points, setPoints] = useState([]);
     const [chosen, setChosen] = useState(null);
     const [newCenter, setNewCenter] = useState();
+    const [pointInfo, setPointInfo] = useState();
 
     const showThePoint = (e) => {
         console.log("e", e);
@@ -87,6 +88,8 @@ export default function Reports(props) {
         return newTime.toLocaleString("de-DE");
     };
 
+    // // console.log("pointInfo", pointInfo);
+
     return (
         <>
             <SearchBox panTo={panTo} />
@@ -113,7 +116,8 @@ export default function Reports(props) {
                             onClick={() => {
                                 setChosen(point);
 
-                                console.log("point", point);
+                                // showInfo();
+                                console.log("point", point.pointInfo);
                             }}
                             icon={{
                                 url: "/points.png",
@@ -123,7 +127,40 @@ export default function Reports(props) {
                             }}
                         />
                     ))}
-                {chosen && (
+                {chosen && chosen.pointInfo && (
+                    <InfoWindow
+                        position={{
+                            lat: chosen.lat,
+                            lng: chosen.lng,
+                        }}
+                        onCloseClick={() => {
+                            setChosen(null);
+                        }}
+                    >
+                        <div>
+                            <div>
+                                <div className="info-window">
+                                    <h3>{chosen.pointInfo.title}</h3>
+                                    <p>{dateChange(chosen.pointInfo.ts)}</p>
+                                    <img
+                                        src={
+                                            chosen.pointInfo.image ||
+                                            "/index.png"
+                                        }
+                                    />
+                                    <p>{chosen.pointInfo.description}</p>
+                                    <p>
+                                        This incident happend on:{" "}
+                                        {dateChange(
+                                            chosen.pointInfo.time_incident
+                                        )}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </InfoWindow>
+                )}
+                {chosen && !chosen.pointInfo && (
                     <InfoWindow
                         position={{
                             lat: chosen.lat,
@@ -135,7 +172,7 @@ export default function Reports(props) {
                     >
                         <div>
                             <FormToReport
-                                toggleModal={toggleModal}
+                                getInfo={(data) => (chosen.pointInfo = data[0])}
                                 lat={chosen.lat}
                                 lng={chosen.lng}
                             />

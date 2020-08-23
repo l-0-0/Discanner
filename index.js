@@ -251,6 +251,10 @@ app.get("/user", (req, res) => {
         });
 });
 
+app.get("/each-point", (req, res) => {
+    console.log("req.body", req.body);
+});
+
 app.get("/logout", (req, res) => {
     req.session.userId = null;
     // console.log("your're logged out");

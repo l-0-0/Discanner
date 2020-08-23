@@ -23,9 +23,8 @@ export default function Map() {
         (async () => {
             try {
                 const { data } = await axios.get("/get-posts");
-
                 setAllPoints(data);
-                console.log("data getting from posts", data);
+                // console.log("data getting from posts", data);
             } catch (err) {
                 console.log("error in getting posts: ", err);
             }
@@ -55,11 +54,8 @@ export default function Map() {
     }, []);
 
     const panTo = useCallback(({ lat, lng }) => {
-        console.log("hello from outside");
-        // if (mapRef.current) {
-        console.log("hello from inside");
         mapRef.current.panTo({ lat, lng });
-        mapRef.current.setZoom(14);
+        mapRef.current.setZoom(16);
         // }
     }, []);
 
@@ -116,11 +112,14 @@ export default function Map() {
                                     //     origin: new google.maps.Point(0, 0),
                                     //     anchor: new google.maps.Point(15, 15),
                                     // }}
-                                    onClick={() => setCurrentMarker(id)}
+                                    onClick={() => {
+                                        console.log(id);
+                                        setCurrentMarker(id);
+                                    }}
                                 />
                             );
                         })}
-                    {currentMarker && (
+                    {allPoints && allPoints[currentMarker] && (
                         <InfoWindow
                             position={{
                                 lat: Number(allPoints[currentMarker].lat),

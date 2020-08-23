@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "./axios";
 
 export default function FormToReport(props) {
-    const { lat, lng } = props;
+    const { lat, lng, getInfo } = props;
     // // console.log("props", props);
     const [posts, setPosts] = useState([]);
     const [inputs, setInputs] = useState();
@@ -31,6 +31,7 @@ export default function FormToReport(props) {
                     // console.log("data from post image", data);
 
                     setPosts(data);
+                    getInfo(data);
                     setFile(null);
                 })
                 .catch((err) => console.log("error in post an image: ", err));
@@ -44,9 +45,10 @@ export default function FormToReport(props) {
                     lng,
                 })
                 .then(({ data }) => {
-                    // console.log("data in publish post route", data);
+                    console.log("data in publish post route", data[0].id);
 
                     setPosts(data);
+                    getInfo(data);
                 })
                 .catch((err) =>
                     console.log("error in publish post route: ", err)
@@ -69,7 +71,7 @@ export default function FormToReport(props) {
             axios
                 .post("/update-image", formData)
                 .then(({ data }) => {
-                    console.log("data from post image", data);
+                    // console.log("data from post image", data);
                     setPosts(data);
                     setFile(null);
                 })
@@ -115,6 +117,8 @@ export default function FormToReport(props) {
             setButton("Edit");
         }
     };
+
+    // console.log("posts", getInfo);
 
     return (
         <>

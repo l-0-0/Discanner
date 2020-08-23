@@ -53,3 +53,8 @@ module.exports.updateReport = (lat, lng, posts, time, title) => {
     let params = [lat, lng, posts, time, title];
     return db.query(q, params);
 };
+
+// module.exports.getAllPosts = () => {
+//     let q = `SELECT * FROM places ORDER BY ts DESC`;
+//     return db.query(q);
+// };
