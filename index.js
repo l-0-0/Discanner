@@ -251,7 +251,7 @@ app.get("/user", (req, res) => {
         });
 });
 
-app.get("/api/each-point/:id", (req, res) => {
+app.get("/each-point/:id", (req, res) => {
     console.log("req.body", req.params);
     db.getEachPost(req.params.id)
         .then((results) => {

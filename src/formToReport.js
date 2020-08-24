@@ -229,7 +229,10 @@ export default function FormToReport(props) {
                                     </p>
                                 </div>
                             </div>
-                            <button onClick={() => deleteInfo(post.id)}>
+                            <button
+                                id="delete-button"
+                                onClick={() => deleteInfo(post.id)}
+                            >
                                 Delete
                             </button>
                         </>

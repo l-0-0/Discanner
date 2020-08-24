@@ -60,6 +60,7 @@ body {
     align-self: center;
     object-fit: cover;
     overflow: hidden;
+    object-position: center;
 }
 
 .info-window p {
@@ -139,7 +140,7 @@ input {
     padding-right: 10px;
     border-radius: 5px;
     padding-top: 0;
-    text-decoration: underline;
+    /* text-decoration: underline; */
 }
 
 #information p {
@@ -258,6 +259,11 @@ input {
     border-radius: 5px;
 }
 
+#delete-button {
+    margin-left: 10rem;
+    margin-bottom: 0;
+}
+
 #text {
     position: absolute;
     left: 11.5rem;
@@ -266,9 +272,10 @@ input {
     border-radius: 5px;
     padding-left: 15px;
     margin-top: 10px;
+    text-align: center;
     box-shadow: -1px 2px 7px 5px hsla(0, 0%, 0%, 0.25);
     background-color: hsl(0deg 0% 100%);
-    min-width: 120px;
+    width: 170px;
 }
 
 #text-logo {

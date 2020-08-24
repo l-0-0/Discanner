@@ -26,12 +26,27 @@ export default function Map() {
             try {
                 const { data } = await axios.get("/get-posts");
                 setAllPoints(data);
+
                 // console.log("data getting from posts", data);
             } catch (err) {
                 console.log("error in getting posts: ", err);
             }
         })();
     }, []);
+
+    useEffect(() => {
+        if (allPoints) {
+            const markerId = location.pathname.slice(1);
+            const markerIdx = allPoints.findIndex(
+                (point) => point.id == markerId
+            );
+            console.log(markerIdx);
+            console.log(allPoints);
+            if (!isNaN(markerIdx)) {
+                setCurrentMarker(markerIdx);
+            }
+        }
+    }, [allPoints]);
 
     const center = {
         lat: 52.520008,
@@ -57,7 +72,7 @@ export default function Map() {
 
     const panTo = useCallback(({ lat, lng }) => {
         mapRef.current.panTo({ lat, lng });
-        mapRef.current.setZoom(15);
+        mapRef.current.setZoom(16);
     }, []);
 
     //the hook gives us back isLoaded and loadError. we use these
@@ -83,7 +98,7 @@ export default function Map() {
 
     const eachPost = (id) => {
         axios
-            .get("/api/each-point/" + id)
+            .get("/each-point/" + id)
             .then(({ data }) => {
                 console.log("data", data);
                 setEachInfo(data);
@@ -166,7 +181,7 @@ export default function Map() {
 
                                 <QRCodeGenerator
                                     id={allPoints[currentMarker].id}
-                                    text="http://localhost:8080/"
+                                    text={`http://localhost:8080/${allPoints[currentMarker].id}`}
                                     size={100}
                                 />
                             </div>
