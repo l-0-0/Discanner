@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "./axios";
 
 export default function FormToReport(props) {
-    const { lat, lng, getInfo } = props;
+    const { lat, lng, getInfo, deletePost } = props;
     // // console.log("props", props);
     const [posts, setPosts] = useState([]);
     const [inputs, setInputs] = useState();
@@ -124,7 +124,18 @@ export default function FormToReport(props) {
         }
     };
 
-    // console.log("posts", getInfo);
+    const deleteInfo = (id) => {
+        axios
+            .delete("/delete/" + id)
+            .then(({ data }) => {
+                if (data.success == true) {
+                    deletePost(id);
+                }
+            })
+            .catch((err) => {
+                console.log("error in deleting: ", err);
+            });
+    };
 
     return (
         <>
@@ -218,6 +229,9 @@ export default function FormToReport(props) {
                                     </p>
                                 </div>
                             </div>
+                            <button onClick={() => deleteInfo(post.id)}>
+                                Delete
+                            </button>
                         </>
                     );
                 })}

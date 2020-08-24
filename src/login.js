@@ -3,7 +3,7 @@ import axios from "./axios";
 // import Reports from "./report";
 
 export default function Login(props) {
-    let { isLogged } = props;
+    let { isLogged, showWindow } = props;
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [error, setError] = useState(false);
@@ -27,8 +27,13 @@ export default function Login(props) {
     };
 
     return (
-        <div className="back">
-            <div className="forms">
+        <div className="back" onClick={showWindow}>
+            {/* <p id="close" onClick={showWindow}>
+                {" "}
+                x{" "}
+            </p> */}
+
+            <div className="forms" onClick={(e) => e.stopPropagation()}>
                 {error && (
                     <div className="error">
                         Something went wrong! Please try again.

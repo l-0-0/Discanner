@@ -3,7 +3,7 @@ import axios from "./axios";
 // import Reports from "./report";
 
 export default function Registration(props) {
-    let { isLogged } = props;
+    let { isLogged, showWindow } = props;
 
     const [first, setFirst] = useState();
     const [last, setLast] = useState();
@@ -37,8 +37,8 @@ export default function Registration(props) {
     };
 
     return (
-        <div className="back">
-            <div className="forms">
+        <div className="back" onClick={showWindow}>
+            <div className="forms" onClick={(e) => e.stopPropagation()}>
                 {error && (
                     <div className="error">
                         Oops! Something went wrong, try again!

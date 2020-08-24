@@ -81,7 +81,7 @@ body {
 button {
     width: 250px;
     height: 50px;
-    font-size: 15px;
+    font-size: 18px;
     font-weight: bold;
     margin: 30px;
     text-align: center;
@@ -124,10 +124,32 @@ input {
     z-index: -20;
 }
 
+#information {
+    width: 430px;
+    height: 50px;
+    position: absolute;
+    box-shadow: -1px 2px 7px 5px hsla(0, 0%, 0%, 0.25);
+    background-color: hsl(0deg 0% 100%);
+    top: 42.5rem;
+    left: 37rem;
+    font-weight: 600;
+    font-size: 18px;
+    padding-bottom: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 5px;
+    padding-top: 0;
+    text-decoration: underline;
+}
+
+#information p {
+    margin: 0;
+    padding-top: 10px;
+}
 #search {
     position: absolute;
     left: 81rem;
-    top: 30px;
+    top: 25px;
     z-index: 10;
     box-shadow: -1px 2px 7px 5px hsla(0, 0%, 0%, 0.25);
     background-color: hsl(0deg 0% 100%);
@@ -139,6 +161,7 @@ input {
     display: flex;
     flex-direction: column;
     align-items: center;
+    z-index: 5;
 }
 
 .forms input {
@@ -155,7 +178,6 @@ input {
     width: 100%;
     min-height: 100%;
     max-height: 100vh;
-    /* z-index: 2; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -163,6 +185,10 @@ input {
     font-family: "Source Sans Pro", sans-serif;
     overflow: hidden;
 }
+
+/* #close {
+    color: white;
+} */
 
 .modal {
     position: absolute;
@@ -190,7 +216,7 @@ input {
 }
 
 .report-button {
-    top: 40rem;
+    top: 40.5rem;
     position: absolute;
     left: 0;
     /* z-index: 10; */
@@ -198,7 +224,7 @@ input {
 
 .logout {
     position: absolute;
-    top: 37rem;
+    top: 38rem;
     left: 2rem;
     width: 250px;
     box-shadow: -1px 2px 7px 5px hsla(0, 0%, 0%, 0.25);

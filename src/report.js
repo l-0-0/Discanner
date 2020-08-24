@@ -88,6 +88,11 @@ export default function Reports(props) {
         return newTime.toLocaleString("de-DE");
     };
 
+    const deletePost = (id) => {
+        setPoints(points.filter((point) => point != chosen));
+        setChosen(null);
+    };
+
     // // console.log("pointInfo", pointInfo);
 
     return (
@@ -175,6 +180,7 @@ export default function Reports(props) {
                                 getInfo={(data) => (chosen.pointInfo = data[0])}
                                 lat={chosen.lat}
                                 lng={chosen.lng}
+                                deletePost={deletePost}
                             />
                         </div>
                     </InfoWindow>

@@ -54,7 +54,14 @@ module.exports.updateReport = (lat, lng, posts, time, title) => {
     return db.query(q, params);
 };
 
-// module.exports.getAllPosts = () => {
-//     let q = `SELECT * FROM places ORDER BY ts DESC`;
-//     return db.query(q);
-// };
+module.exports.getEachPost = (id) => {
+    let q = `SELECT * FROM places WHERE id=$1 `;
+    let params = [id];
+    return db.query(q, params);
+};
+
+module.exports.deletePoint = (id) => {
+    let q = `DELETE FROM places WHERE id=$1`;
+    let params = [id];
+    return db.query(q, params);
+};

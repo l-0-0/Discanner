@@ -15,6 +15,7 @@ export default function App() {
     const [button, setButton] = useState("Don't show the points");
     const [showPoints, setShowPoints] = useState(true);
     const [window, setWindow] = useState(false);
+    const [logout, setLogout] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -65,12 +66,31 @@ export default function App() {
         }
     };
 
+    // const logout = () => {
+    //     axios.get("/logout").then((data) => {
+    //         console.log("data", data);
+    //         if (data.success == true) {
+    //             setLogout(true);
+    //         }
+    //     });
+    // };
+
+    console.log("modal", modal);
+    console.log("window", window);
     return (
         <>
             <div className="main-div">
                 <Logo />
-                <p>DiScanner scannes the topography of violence.</p>
-                <p></p>
+                <div id="information">
+                    <p>
+                        collective mapping to scann the topography of violence
+                    </p>
+                    {/* <p>
+                        DiScanner points at the everday cases of discrimination
+                        under skin of this city. It is a collective mapping in
+                        order to scannes the topography of violence.{" "}
+                    </p> */}
+                </div>
 
                 {!isLoggedIn && (
                     <>
@@ -86,7 +106,7 @@ export default function App() {
                                 <h2
                                     onClick={() => {
                                         setLogComp(true);
-                                        showWindow();
+                                        setWindow(true);
                                     }}
                                 >
                                     {" "}
@@ -95,6 +115,7 @@ export default function App() {
                                 <h2
                                     onClick={() => {
                                         setRegComp(true);
+                                        setWindow(true);
                                     }}
                                 >
                                     {" "}
@@ -102,9 +123,22 @@ export default function App() {
                                 </h2>
                             </div>
                         )}
-
-                        {regComp && <Registration isLogged={isLogged} />}
-                        {logComp && <Login isLogged={isLogged} />}
+                        {window && (
+                            <div>
+                                {regComp && (
+                                    <Registration
+                                        isLogged={isLogged}
+                                        showWindow={showWindow}
+                                    />
+                                )}
+                                {logComp && (
+                                    <Login
+                                        isLogged={isLogged}
+                                        showWindow={showWindow}
+                                    />
+                                )}
+                            </div>
+                        )}
                         <Map />
                     </>
                 )}

@@ -11,6 +11,7 @@ import {
     InfoWindow,
 } from "@react-google-maps/api";
 import mapStyle from "./mapStyle";
+import { Link } from "react-router-dom";
 
 const libraries = ["places"];
 const secrets = require("../secrets");
@@ -18,6 +19,7 @@ const secrets = require("../secrets");
 export default function Map() {
     const [allPoints, setAllPoints] = useState();
     const [currentMarker, setCurrentMarker] = useState(null);
+    const [eachInfo, setEachInfo] = useState();
 
     useEffect(() => {
         (async () => {
@@ -79,6 +81,19 @@ export default function Map() {
         return newTime.toLocaleString("de-DE");
     };
 
+    const eachPost = (id) => {
+        axios
+            .get("/api/each-point/" + id)
+            .then(({ data }) => {
+                console.log("data", data);
+                setEachInfo(data);
+            })
+            .catch((err) => {
+                console.log("error in each post", err);
+            });
+    };
+
+    console.log("eachInfo", eachInfo);
     return (
         <div id="map-main">
             <SearchBox panTo={panTo} />

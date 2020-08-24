@@ -251,8 +251,28 @@ app.get("/user", (req, res) => {
         });
 });
 
-app.get("/each-point", (req, res) => {
-    console.log("req.body", req.body);
+app.get("/api/each-point/:id", (req, res) => {
+    console.log("req.body", req.params);
+    db.getEachPost(req.params.id)
+        .then((results) => {
+            console.log("results.rows", results.rows[0]);
+            res.json(results.rows[0]);
+        })
+        .catch((err) => {
+            console.log("error in getting the info for each", err);
+        });
+});
+
+app.delete("/delete/:id", (req, res) => {
+    // console.log("req.body", req.params);
+    db.deletePoint(req.params.id)
+        .then(() => {
+            res.json({ success: true });
+        })
+
+        .catch((err) => {
+            console.log("error in deleting", err);
+        });
 });
 
 app.get("/logout", (req, res) => {
