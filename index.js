@@ -12,18 +12,13 @@ const compression = require("compression");
 
 const app = express();
 
-//middleware to see which files/routes we use on the browser
 app.use((req, res, next) => {
-    // console.log("req.url", req.url);
     next();
 });
 
 app.use(compression());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static("public"));
-
-// const server = require("http").Server(app);
-// const io = require("socket.io")(server, { origins: "localhost:8080" });
 
 app.use(
     cookieSession({
@@ -33,7 +28,6 @@ app.use(
 );
 
 app.use(express.json());
-//it has to be after cookie session and urlencoded
 app.use(csurf());
 
 app.use(function (req, res, next) {
@@ -84,8 +78,6 @@ app.post("/register", (req, res) => {
         .then((hashedPw) => {
             db.register(req.body.first, req.body.last, req.body.email, hashedPw)
                 .then((results) => {
-                    // console.log("hashed user password:", hashedPw);
-                    // console.log(results.rows[0]);
                     let userId = results.rows[0].id;
                     req.session.userId = userId;
                     req.session.success = "true";
@@ -107,7 +99,6 @@ app.post("/register", (req, res) => {
 });
 
 app.post("/post-image", uploader.single("file"), s3.upload, (req, res) => {
-    // console.log(req.body);
     const { filename } = req.file;
     const url = s3Url + filename;
     db.postImage(
@@ -120,7 +111,6 @@ app.post("/post-image", uploader.single("file"), s3.upload, (req, res) => {
         req.body.lng
     )
         .then((results) => {
-            // console.log("results.rows add image", results.rows[0]);
             res.json(results.rows);
         })
         .catch((err) => {
@@ -159,7 +149,6 @@ app.post("/update-report", (req, res) => {
         });
 });
 app.post("/publish-report", (req, res) => {
-    // console.log(req.body);
     db.insertPosts(
         req.session.userId,
         req.body.inputs,
@@ -169,7 +158,6 @@ app.post("/publish-report", (req, res) => {
         req.body.lng
     )
         .then((results) => {
-            // console.log("results.rows in", results.rows);
             res.json(results.rows);
         })
         .catch((err) => {
@@ -180,7 +168,6 @@ app.post("/publish-report", (req, res) => {
 app.get("/get-posts", (req, res) => {
     db.getAllPosts()
         .then((results) => {
-            // console.log("results.rows", results.rows);
             res.json(results.rows);
         })
         .catch((err) => {
@@ -197,7 +184,6 @@ app.post("/login", (req, res) => {
                     success: "false",
                 });
             } else {
-                // console.log(req.body.password, results.rows[0].password);
                 compare(req.body.password, results.rows[0].password)
                     .then((matchValue) => {
                         req.session.userId = results.rows[0].usersId;
@@ -239,12 +225,7 @@ app.post("/login", (req, res) => {
 app.get("/user", (req, res) => {
     db.userInfo(req.session.userId)
         .then((results) => {
-            // console.log("user info: ", results.rows);
-
-            res.json(
-                results.rows
-                // success: "true",
-            );
+            res.json(results.rows);
         })
         .catch((err) => {
             console.log("error in getting user info: ", err);
@@ -264,7 +245,6 @@ app.get("/each-point/:id", (req, res) => {
 });
 
 app.delete("/delete/:id", (req, res) => {
-    // console.log("req.body", req.params);
     db.deletePoint(req.params.id)
         .then(() => {
             res.json({ success: true });
@@ -277,7 +257,6 @@ app.delete("/delete/:id", (req, res) => {
 
 app.get("/logout", (req, res) => {
     req.session.userId = null;
-    // console.log("your're logged out");
     res.redirect("/");
 });
 

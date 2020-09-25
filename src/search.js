@@ -30,7 +30,6 @@ export default function SearchBox(props) {
 
     const addressSelect = (address) => {
         setValue(address, false);
-        // console.log("address :", address);
         clearSuggestions();
     };
 
@@ -39,12 +38,10 @@ export default function SearchBox(props) {
             <Combobox
                 onSelect={async (selected) => {
                     addressSelect(selected);
-                    // console.log(selected);
+
                     try {
                         const results = await getGeocode({ address: selected });
-                        // console.log("selected", selected);
                         const { lat, lng } = await getLatLng(results[0]);
-                        // console.log(lat, lng);
                         panTo({ lat, lng });
                     } catch (err) {
                         console.log("error in onSelect", err);

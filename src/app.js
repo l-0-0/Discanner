@@ -15,15 +15,11 @@ export default function App() {
     const [button, setButton] = useState("Don't show the points");
     const [showPoints, setShowPoints] = useState(true);
     const [window, setWindow] = useState(false);
-    const [logout, setLogout] = useState(false);
 
     useEffect(() => {
         (async () => {
             try {
                 const { data } = await axios.get("/user");
-
-                console.log("data in users route", data);
-
                 if (data.length != 0) {
                     setIsLogedIn(true);
                     setUsers(data);
@@ -66,17 +62,6 @@ export default function App() {
         }
     };
 
-    // const logout = () => {
-    //     axios.get("/logout").then((data) => {
-    //         console.log("data", data);
-    //         if (data.success == true) {
-    //             setLogout(true);
-    //         }
-    //     });
-    // };
-
-    console.log("modal", modal);
-    console.log("window", window);
     return (
         <>
             <div className="main-div">

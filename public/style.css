@@ -60,7 +60,7 @@ body {
     align-self: center;
     object-fit: cover;
     overflow: hidden;
-    object-position: center;
+    object-position: left;
 }
 
 .info-window p {

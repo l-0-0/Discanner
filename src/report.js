@@ -32,13 +32,12 @@ export default function Reports(props) {
                 time: new Date(),
             },
         ]);
-        // console.log(lat, lng);
+
         setNewCenter({
             newLat: lat,
             newLng: lng,
         });
     };
-    // console.log(newCenter);
 
     let center = {
         lat: 52.520008,
@@ -52,7 +51,6 @@ export default function Reports(props) {
 
     const options = {
         styles: mapStyle,
-        //get rid of default things on the map
         disableDefaultUI: true,
         zoomControl: true,
     };
@@ -67,12 +65,8 @@ export default function Reports(props) {
         mapRef.current.setZoom(14);
     }, []);
 
-    //the hook gives us back isLoaded and loadError. we use these
-    //two variables to know if our google script is ready and we
-    //can start working with the map!
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: secrets.REACT_APP_GOOGLE_MAPS_API_KEY,
-        //places library to be able to search
         libraries,
     });
 
@@ -92,8 +86,6 @@ export default function Reports(props) {
         setPoints(points.filter((point) => point != chosen));
         setChosen(null);
     };
-
-    // // console.log("pointInfo", pointInfo);
 
     return (
         <div id="map-main">
@@ -120,8 +112,6 @@ export default function Reports(props) {
                             }}
                             onClick={() => {
                                 setChosen(point);
-
-                                // showInfo();
                                 console.log("point", point.pointInfo);
                             }}
                             icon={{

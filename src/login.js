@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "./axios";
-// import Reports from "./report";
 
 export default function Login(props) {
     let { isLogged, showWindow } = props;
@@ -15,10 +14,8 @@ export default function Login(props) {
                 password,
             })
             .then(({ data }) => {
-                // console.log("data in login", data);
                 if (data.success) {
                     isLogged(data.data);
-                    // setCanReport(true);
                 } else {
                     setError(true);
                 }
@@ -28,11 +25,6 @@ export default function Login(props) {
 
     return (
         <div className="back" onClick={showWindow}>
-            {/* <p id="close" onClick={showWindow}>
-                {" "}
-                x{" "}
-            </p> */}
-
             <div className="forms" onClick={(e) => e.stopPropagation()}>
                 {error && (
                     <div className="error">

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "./axios";
-// import Reports from "./report";
 
 export default function Registration(props) {
     let { isLogged, showWindow } = props;
@@ -10,7 +9,6 @@ export default function Registration(props) {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [error, setError] = useState(false);
-    // const [canReport, setCanReport] = useState(false);
     const [modal, setModal] = useState(false);
 
     const submit = () => {
@@ -22,10 +20,8 @@ export default function Registration(props) {
                 password,
             })
             .then(({ data }) => {
-                // console.log("data in register", data);
                 if (data.success) {
                     isLogged(data.data);
-                    // setCanReport(true);
                 } else {
                     setError(true);
                 }

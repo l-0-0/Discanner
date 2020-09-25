@@ -26,8 +26,6 @@ export default function Map() {
             try {
                 const { data } = await axios.get("/get-posts");
                 setAllPoints(data);
-
-                // console.log("data getting from posts", data);
             } catch (err) {
                 console.log("error in getting posts: ", err);
             }
@@ -113,7 +111,6 @@ export default function Map() {
         <div id="map-main">
             <SearchBox panTo={panTo} />
 
-            {/* // put some info window inside this: */}
             <GoogleMap
                 mapContainerStyle={containerStyle}
                 center={center}

@@ -3,7 +3,6 @@ import axios from "./axios";
 
 export default function FormToReport(props) {
     const { lat, lng, getInfo, deletePost } = props;
-    // // console.log("props", props);
     const [posts, setPosts] = useState([]);
     const [inputs, setInputs] = useState();
     const [file, setFile] = useState();
@@ -29,8 +28,6 @@ export default function FormToReport(props) {
             axios
                 .post("/post-image", formData)
                 .then(({ data }) => {
-                    // console.log("data from post image", data);
-
                     setPosts(data);
                     getInfo(data);
                     setFile(null);
@@ -46,8 +43,6 @@ export default function FormToReport(props) {
                     lng,
                 })
                 .then(({ data }) => {
-                    console.log("data in publish post route", data[0].id);
-
                     setPosts(data);
                     const info = data[0].description;
 
@@ -62,8 +57,6 @@ export default function FormToReport(props) {
         setShowDetails(true);
     }
 
-    console.log("posts", posts);
-
     const editReport = () => {
         setShowDetails(false);
 
@@ -76,7 +69,6 @@ export default function FormToReport(props) {
             axios
                 .post("/update-image", formData)
                 .then(({ data }) => {
-                    // console.log("data from post image", data);
                     setPosts(data);
                     setFile(null);
                 })
@@ -91,8 +83,6 @@ export default function FormToReport(props) {
                     lng,
                 })
                 .then(({ data }) => {
-                    // console.log("data in update post route", data);
-
                     setPosts(data);
                 })
                 .catch((err) =>
