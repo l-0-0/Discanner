@@ -26,4 +26,4 @@ The first page of the website shows all the points marked by different users.
 CLicking on the points opens a window which shows the detailed information of the incident
 with uploaded photo and a unique QR-Code for that point. The QR-Codes are printable for the users in order to stick on public spaces. It's also possible to search on the map for a specific place.
 
-![Marked points on the map](readme/points.gif)
+![Marked points on the map](public/readme/points.gif)
